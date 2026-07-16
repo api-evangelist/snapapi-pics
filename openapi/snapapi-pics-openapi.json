@@ -1,0 +1,4089 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "SnapAPI - Screenshot & Web Data API",
+    "version": "2.0.0",
+    "description": "Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.\n\n## Authentication\n\nAll API endpoints (except Auth and Health) require one of:\n- `X-Api-Key: sk_live_xxx` header (recommended for server-side)\n- `Authorization: Bearer sk_live_xxx` header\n- `?access_key=sk_live_xxx` query parameter (for GET endpoints)\n\nDashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.\n\n## Rate Limits\n\n| Plan | Requests/month | Rate |\n|------|---------------|------|\n| Free | 100 | 10/min |\n| Starter | 5,000 | 60/min |\n| Pro | 50,000 | 300/min |\n\nRate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`",
+    "contact": {
+      "email": "support@snapapi.pics",
+      "url": "https://snapapi.pics"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://api.snapapi.pics",
+      "description": "Production"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "Your SnapAPI API key"
+      },
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "JWT access token obtained from /auth/login or /auth/refresh"
+      }
+    },
+    "headers": {
+      "X-RateLimit-Limit": {
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Max requests per window"
+      },
+      "X-RateLimit-Remaining": {
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Remaining requests"
+      },
+      "X-RateLimit-Reset": {
+        "schema": {
+          "type": "integer"
+        },
+        "description": "Window reset time (unix ms)"
+      },
+      "X-Request-Id": {
+        "schema": {
+          "type": "string"
+        },
+        "description": "Unique request identifier for debugging"
+      }
+    },
+    "schemas": {
+      "Error": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "integer"
+          },
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ScreenshotRequest": {
+        "type": "object",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com"
+          },
+          "html": {
+            "type": "string",
+            "maxLength": 5000000,
+            "description": "Raw HTML to render"
+          },
+          "markdown": {
+            "type": "string",
+            "maxLength": 1000000,
+            "description": "Markdown to render"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp",
+              "avif",
+              "pdf"
+            ],
+            "default": "png"
+          },
+          "quality": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 100,
+            "default": 80
+          },
+          "device": {
+            "type": "string",
+            "enum": [
+              "desktop-1080p",
+              "desktop-1440p",
+              "desktop-4k",
+              "macbook-pro-13",
+              "macbook-pro-16",
+              "imac-24",
+              "iphone-12",
+              "iphone-13",
+              "iphone-14",
+              "iphone-14-pro",
+              "iphone-15",
+              "iphone-15-pro",
+              "iphone-15-pro-max",
+              "iphone-se",
+              "ipad",
+              "ipad-mini",
+              "ipad-air",
+              "ipad-pro-11",
+              "ipad-pro-12.9",
+              "pixel-7",
+              "pixel-8",
+              "pixel-8-pro",
+              "samsung-galaxy-s23",
+              "samsung-galaxy-s24",
+              "samsung-galaxy-tab-s9"
+            ]
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 3840,
+            "default": 1280
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 2160,
+            "default": 800
+          },
+          "deviceScaleFactor": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 3,
+            "default": 1
+          },
+          "isMobile": {
+            "type": "boolean",
+            "default": false
+          },
+          "hasTouch": {
+            "type": "boolean",
+            "default": false
+          },
+          "isLandscape": {
+            "type": "boolean",
+            "default": false
+          },
+          "fullPage": {
+            "type": "boolean",
+            "default": false
+          },
+          "fullPageScrollDelay": {
+            "type": "integer",
+            "default": 400
+          },
+          "fullPageMaxHeight": {
+            "type": "integer",
+            "maximum": 50000
+          },
+          "selector": {
+            "type": "string",
+            "description": "CSS selector to capture specific element"
+          },
+          "clipX": {
+            "type": "integer"
+          },
+          "clipY": {
+            "type": "integer"
+          },
+          "clipWidth": {
+            "type": "integer"
+          },
+          "clipHeight": {
+            "type": "integer"
+          },
+          "delay": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 30000,
+            "default": 0
+          },
+          "timeout": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 60000,
+            "default": 30000
+          },
+          "waitUntil": {
+            "type": "string",
+            "enum": [
+              "load",
+              "domcontentloaded",
+              "networkidle"
+            ],
+            "default": "load"
+          },
+          "waitForSelector": {
+            "type": "string"
+          },
+          "darkMode": {
+            "type": "boolean",
+            "default": false
+          },
+          "reducedMotion": {
+            "type": "boolean",
+            "default": false
+          },
+          "css": {
+            "type": "string",
+            "maxLength": 100000,
+            "description": "Custom CSS (Starter+)"
+          },
+          "javascript": {
+            "type": "string",
+            "maxLength": 100000,
+            "description": "Custom JS (Pro+)"
+          },
+          "hideSelectors": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 50
+          },
+          "clickSelector": {
+            "type": "string"
+          },
+          "clickDelay": {
+            "type": "integer"
+          },
+          "blockAds": {
+            "type": "boolean",
+            "default": false,
+            "description": "Block ads (Starter+)"
+          },
+          "blockTrackers": {
+            "type": "boolean",
+            "default": false,
+            "description": "Block trackers (Pro+)"
+          },
+          "blockCookieBanners": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockChatWidgets": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockResources": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "document",
+                "stylesheet",
+                "image",
+                "media",
+                "font",
+                "script",
+                "xhr",
+                "fetch",
+                "websocket"
+              ]
+            }
+          },
+          "userAgent": {
+            "type": "string"
+          },
+          "extraHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "cookies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                },
+                "domain": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "httpAuth": {
+            "type": "object",
+            "properties": {
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          },
+          "proxy": {
+            "type": "object",
+            "properties": {
+              "server": {
+                "type": "string",
+                "format": "uri"
+              },
+              "username": {
+                "type": "string"
+              },
+              "password": {
+                "type": "string"
+              }
+            }
+          },
+          "geolocation": {
+            "type": "object",
+            "properties": {
+              "latitude": {
+                "type": "number"
+              },
+              "longitude": {
+                "type": "number"
+              },
+              "accuracy": {
+                "type": "number"
+              }
+            }
+          },
+          "timezone": {
+            "type": "string",
+            "example": "America/New_York"
+          },
+          "locale": {
+            "type": "string",
+            "example": "en-US"
+          },
+          "pdfOptions": {
+            "type": "object",
+            "properties": {
+              "pageSize": {
+                "type": "string",
+                "enum": [
+                  "a4",
+                  "a3",
+                  "a5",
+                  "letter",
+                  "legal",
+                  "tabloid",
+                  "custom"
+                ]
+              },
+              "landscape": {
+                "type": "boolean"
+              },
+              "printBackground": {
+                "type": "boolean"
+              },
+              "scale": {
+                "type": "number",
+                "minimum": 0.1,
+                "maximum": 2
+              },
+              "marginTop": {
+                "type": "string"
+              },
+              "marginBottom": {
+                "type": "string"
+              },
+              "marginLeft": {
+                "type": "string"
+              },
+              "marginRight": {
+                "type": "string"
+              },
+              "headerTemplate": {
+                "type": "string"
+              },
+              "footerTemplate": {
+                "type": "string"
+              },
+              "displayHeaderFooter": {
+                "type": "boolean"
+              },
+              "pageRanges": {
+                "type": "string"
+              }
+            }
+          },
+          "thumbnail": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "width": {
+                "type": "integer"
+              },
+              "height": {
+                "type": "integer"
+              },
+              "fit": {
+                "type": "string",
+                "enum": [
+                  "cover",
+                  "contain",
+                  "fill"
+                ]
+              }
+            }
+          },
+          "failOnHttpError": {
+            "type": "boolean",
+            "default": false
+          },
+          "failIfContentMissing": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "failIfContentContains": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "cache": {
+            "type": "boolean",
+            "default": false,
+            "description": "Enable caching (Pro+)"
+          },
+          "cacheTtl": {
+            "type": "integer",
+            "minimum": 60,
+            "maximum": 2592000,
+            "default": 86400
+          },
+          "responseType": {
+            "type": "string",
+            "enum": [
+              "binary",
+              "base64",
+              "json"
+            ],
+            "default": "binary"
+          },
+          "includeMetadata": {
+            "type": "boolean",
+            "default": false
+          },
+          "extractMetadata": {
+            "type": "object",
+            "properties": {
+              "fonts": {
+                "type": "boolean"
+              },
+              "colors": {
+                "type": "boolean"
+              },
+              "links": {
+                "type": "boolean"
+              },
+              "httpStatusCode": {
+                "type": "boolean"
+              }
+            }
+          },
+          "storage": {
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "destination": {
+                "type": "string",
+                "enum": [
+                  "snapapi",
+                  "user_s3"
+                ]
+              }
+            }
+          },
+          "async": {
+            "type": "boolean",
+            "default": false
+          },
+          "webhookUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "webhookHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ScreenshotJsonResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "cached": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "string",
+            "description": "Base64-encoded image data"
+          },
+          "format": {
+            "type": "string",
+            "example": "png"
+          },
+          "width": {
+            "type": "integer",
+            "example": 1280
+          },
+          "height": {
+            "type": "integer",
+            "example": 800
+          },
+          "fileSize": {
+            "type": "integer"
+          },
+          "took": {
+            "type": "integer",
+            "description": "Response time in ms"
+          },
+          "metadata": {
+            "type": "object"
+          },
+          "storage": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "url": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "AsyncJobResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "async": {
+            "type": "boolean"
+          },
+          "jobId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "processing",
+              "completed",
+              "failed"
+            ]
+          },
+          "statusUrl": {
+            "type": "string"
+          }
+        }
+      },
+      "BatchRequest": {
+        "type": "object",
+        "required": [
+          "urls"
+        ],
+        "properties": {
+          "urls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uri"
+            },
+            "minItems": 1,
+            "maxItems": 100
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "png",
+              "jpeg",
+              "webp",
+              "avif",
+              "pdf"
+            ],
+            "default": "png"
+          },
+          "quality": {
+            "type": "integer",
+            "default": 80
+          },
+          "width": {
+            "type": "integer",
+            "default": 1280
+          },
+          "height": {
+            "type": "integer",
+            "default": 800
+          },
+          "fullPage": {
+            "type": "boolean",
+            "default": false
+          },
+          "darkMode": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockAds": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockCookieBanners": {
+            "type": "boolean",
+            "default": false
+          },
+          "webhookUrl": {
+            "type": "string",
+            "format": "uri"
+          }
+        }
+      },
+      "VideoRequest": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "format": {
+            "type": "string",
+            "enum": [
+              "webm",
+              "mp4",
+              "gif"
+            ],
+            "default": "webm"
+          },
+          "width": {
+            "type": "integer",
+            "minimum": 320,
+            "maximum": 1920,
+            "default": 1280
+          },
+          "height": {
+            "type": "integer",
+            "minimum": 240,
+            "maximum": 1080,
+            "default": 720
+          },
+          "duration": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 30,
+            "default": 5,
+            "description": "Duration in seconds"
+          },
+          "fps": {
+            "type": "integer",
+            "minimum": 10,
+            "maximum": 30,
+            "default": 25
+          },
+          "scrolling": {
+            "type": "boolean",
+            "default": false
+          },
+          "scrollSpeed": {
+            "type": "integer",
+            "default": 100
+          },
+          "darkMode": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockAds": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockCookieBanners": {
+            "type": "boolean",
+            "default": false
+          },
+          "delay": {
+            "type": "integer",
+            "default": 0
+          },
+          "responseType": {
+            "type": "string",
+            "enum": [
+              "binary",
+              "base64",
+              "json"
+            ],
+            "default": "binary"
+          }
+        }
+      },
+      "ExtractRequest": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "html",
+              "text",
+              "markdown",
+              "article",
+              "links",
+              "images",
+              "metadata",
+              "structured"
+            ],
+            "default": "markdown"
+          },
+          "selector": {
+            "type": "string",
+            "description": "CSS selector to target"
+          },
+          "waitFor": {
+            "type": "string",
+            "description": "Wait for selector before extracting"
+          },
+          "timeout": {
+            "type": "integer",
+            "minimum": 1000,
+            "maximum": 60000,
+            "default": 30000
+          },
+          "darkMode": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockAds": {
+            "type": "boolean",
+            "default": false
+          },
+          "blockCookieBanners": {
+            "type": "boolean",
+            "default": false
+          },
+          "includeImages": {
+            "type": "boolean",
+            "default": true
+          },
+          "maxLength": {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 500000
+          },
+          "cleanOutput": {
+            "type": "boolean",
+            "default": true
+          }
+        }
+      },
+      "ExtractResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "type": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "data": {
+            "description": "Extracted content (format depends on type param)"
+          },
+          "responseTime": {
+            "type": "integer"
+          }
+        }
+      },
+      "AnalyzeRequest": {
+        "type": "object",
+        "required": [
+          "url",
+          "prompt",
+          "apiKey"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "prompt": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5000,
+            "description": "Analysis prompt for the LLM"
+          },
+          "provider": {
+            "type": "string",
+            "enum": [
+              "openai",
+              "anthropic"
+            ],
+            "default": "openai"
+          },
+          "apiKey": {
+            "type": "string",
+            "description": "Your own LLM provider API key (BYOK)"
+          },
+          "model": {
+            "type": "string",
+            "description": "Model override (e.g. gpt-4o, claude-sonnet-4-20250514)"
+          },
+          "jsonSchema": {
+            "type": "object",
+            "description": "JSON schema for structured LLM output"
+          },
+          "timeout": {
+            "type": "integer",
+            "default": 30000
+          },
+          "waitFor": {
+            "type": "string"
+          },
+          "blockAds": {
+            "type": "boolean",
+            "default": true
+          },
+          "blockCookieBanners": {
+            "type": "boolean",
+            "default": true
+          },
+          "includeScreenshot": {
+            "type": "boolean",
+            "default": false
+          },
+          "includeMetadata": {
+            "type": "boolean",
+            "default": true
+          },
+          "maxContentLength": {
+            "type": "integer",
+            "default": 50000
+          }
+        }
+      },
+      "AnalyzeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "url": {
+            "type": "string"
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          },
+          "analysis": {
+            "description": "LLM analysis (string or structured object)"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "model": {
+            "type": "string"
+          },
+          "responseTime": {
+            "type": "integer"
+          }
+        }
+      },
+      "UsageResponse": {
+        "type": "object",
+        "properties": {
+          "used": {
+            "type": "integer",
+            "example": 150
+          },
+          "limit": {
+            "type": "integer",
+            "example": 1000
+          },
+          "remaining": {
+            "type": "integer",
+            "example": 850
+          },
+          "resetAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "UserObject": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "name": {
+            "type": "string"
+          },
+          "plan": {
+            "type": "string",
+            "enum": [
+              "free",
+              "starter",
+              "pro"
+            ]
+          },
+          "avatarUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailVerified": {
+            "type": "boolean"
+          },
+          "isAdmin": {
+            "type": "boolean"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "user": {
+            "$ref": "#/components/schemas/UserObject"
+          },
+          "accessToken": {
+            "type": "string",
+            "description": "JWT access token (15 min expiry). Store in memory only."
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "ScrapeRequest": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to scrape"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "text",
+              "html",
+              "links",
+              "markdown",
+              "metadata"
+            ],
+            "default": "text",
+            "description": "Output format"
+          },
+          "pages": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "default": 1,
+            "description": "Number of paginated pages to scrape"
+          },
+          "waitMs": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 30000,
+            "default": 0,
+            "description": "Wait time in ms after page load"
+          },
+          "proxy": {
+            "type": "string",
+            "description": "Custom proxy URL (http://user:pass@host:port)"
+          },
+          "premiumProxy": {
+            "type": "boolean",
+            "description": "Use managed residential proxy pool"
+          },
+          "blockResources": {
+            "type": "boolean",
+            "default": false,
+            "description": "Block images, media, and fonts"
+          },
+          "locale": {
+            "type": "string",
+            "maxLength": 20,
+            "description": "Browser locale (e.g. en-US)"
+          }
+        }
+      },
+      "ScrapeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "results": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "page": {
+                  "type": "integer"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "data": {
+                  "type": "string",
+                  "description": "Scraped content (string or JSON string for links/metadata)"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ApiKey": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "key": {
+            "type": "string",
+            "description": "Full key value (only returned on create/regenerate)",
+            "example": "sk_live_abc123..."
+          },
+          "name": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "lastUsedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "expiresAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "screenshot",
+                "pdf",
+                "metadata",
+                "batch"
+              ]
+            }
+          }
+        }
+      },
+      "StoredFile": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "storageType": {
+            "type": "string",
+            "enum": [
+              "local",
+              "user_s3"
+            ]
+          },
+          "originalUrl": {
+            "type": "string"
+          },
+          "format": {
+            "type": "string"
+          },
+          "fileSize": {
+            "type": "integer"
+          },
+          "width": {
+            "type": "integer",
+            "nullable": true
+          },
+          "height": {
+            "type": "integer",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Signed URL to access the file"
+          },
+          "thumbnailUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  },
+  "paths": {
+    "/v1/ping": {
+      "get": {
+        "operationId": "ping",
+        "summary": "Ping",
+        "description": "Simple health check. Returns OK status and timestamp.",
+        "tags": [
+          "Health"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/X-Request-Id"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "timestamp": {
+                      "type": "integer",
+                      "example": 1708372800000
+                    }
+                  }
+                },
+                "example": {
+                  "status": "ok",
+                  "timestamp": 1708372800000
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "operationId": "healthCheck",
+        "summary": "Health Check",
+        "tags": [
+          "Health"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health/detailed": {
+      "get": {
+        "operationId": "healthDetailed",
+        "summary": "Detailed Health Check",
+        "description": "Returns status of database, Redis, and job queue.",
+        "tags": [
+          "Health"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "All systems healthy"
+          },
+          "503": {
+            "description": "One or more systems degraded"
+          }
+        }
+      }
+    },
+    "/v1/screenshot": {
+      "post": {
+        "operationId": "takeScreenshot",
+        "summary": "Take Screenshot",
+        "description": "Capture a screenshot of any URL, HTML, or Markdown. Supports full-page, device emulation, dark mode, ad blocking, custom CSS/JS, caching, async processing, webhooks, and cloud storage.",
+        "tags": [
+          "Screenshot"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreenshotRequest"
+              },
+              "examples": {
+                "simple": {
+                  "summary": "Basic screenshot",
+                  "value": {
+                    "url": "https://example.com",
+                    "format": "png"
+                  }
+                },
+                "fullPage": {
+                  "summary": "Full page + dark mode",
+                  "value": {
+                    "url": "https://example.com",
+                    "fullPage": true,
+                    "darkMode": true,
+                    "blockAds": true
+                  }
+                },
+                "mobile": {
+                  "summary": "iPhone 15 Pro",
+                  "value": {
+                    "url": "https://example.com",
+                    "device": "iphone-15-pro"
+                  }
+                },
+                "html": {
+                  "summary": "Render HTML",
+                  "value": {
+                    "html": "<h1>Hello World</h1><p>Rendered by SnapAPI</p>",
+                    "format": "png",
+                    "width": 800,
+                    "height": 600
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Screenshot captured successfully",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/X-Request-Id"
+              },
+              "X-RateLimit-Limit": {
+                "$ref": "#/components/headers/X-RateLimit-Limit"
+              },
+              "X-RateLimit-Remaining": {
+                "$ref": "#/components/headers/X-RateLimit-Remaining"
+              },
+              "X-RateLimit-Reset": {
+                "$ref": "#/components/headers/X-RateLimit-Reset"
+              }
+            },
+            "content": {
+              "image/png": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/jpeg": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/webp": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScreenshotJsonResponse"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Async job accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AsyncJobResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Feature not available on your plan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit or quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "takeScreenshotGet",
+        "summary": "Take Screenshot (GET)",
+        "description": "Simple GET endpoint for screenshots via query parameters.",
+        "tags": [
+          "Screenshot"
+        ],
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "png",
+                "jpeg",
+                "webp",
+                "avif",
+                "pdf"
+              ],
+              "default": "png"
+            }
+          },
+          {
+            "name": "quality",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "width",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1280
+            }
+          },
+          {
+            "name": "height",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 800
+            }
+          },
+          {
+            "name": "full_page",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "dark_mode",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "block_ads",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "block_cookie_banners",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "cache",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "response_type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "binary",
+                "base64",
+                "json"
+              ],
+              "default": "binary"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Screenshot captured"
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Invalid API key"
+          }
+        }
+      }
+    },
+    "/v1/pdf": {
+      "post": {
+        "operationId": "generatePdf",
+        "summary": "Generate PDF",
+        "description": "Generate a PDF from any URL or HTML. Supports page sizes, margins, headers/footers, and scaling.",
+        "tags": [
+          "PDF"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScreenshotRequest"
+              },
+              "example": {
+                "url": "https://example.com",
+                "pdfOptions": {
+                  "pageSize": "a4",
+                  "landscape": false,
+                  "printBackground": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "PDF generated",
+            "content": {
+              "application/pdf": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Invalid API key"
+          }
+        }
+      }
+    },
+    "/v1/screenshot/batch": {
+      "post": {
+        "operationId": "batchScreenshots",
+        "summary": "Batch Screenshots",
+        "description": "Submit up to 100 URLs for batch processing. Returns a job ID to poll for results.",
+        "tags": [
+          "Screenshot"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchRequest"
+              },
+              "example": {
+                "urls": [
+                  "https://example.com",
+                  "https://google.com"
+                ],
+                "format": "png",
+                "width": 1280
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Batch job accepted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "jobId": {
+                      "type": "string"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Quota exceeded"
+          }
+        }
+      }
+    },
+    "/v1/screenshot/batch/{jobId}": {
+      "get": {
+        "operationId": "getBatchStatus",
+        "summary": "Get Batch Job Status",
+        "tags": [
+          "Screenshot"
+        ],
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Batch job status with results"
+          },
+          "404": {
+            "description": "Job not found or expired"
+          }
+        }
+      }
+    },
+    "/v1/screenshot/async/{jobId}": {
+      "get": {
+        "operationId": "getAsyncStatus",
+        "summary": "Get Async Screenshot Status",
+        "tags": [
+          "Screenshot"
+        ],
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "includeData",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            },
+            "description": "Include base64 data in response"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Async job status"
+          },
+          "404": {
+            "description": "Job not found or expired"
+          }
+        }
+      }
+    },
+    "/v1/video": {
+      "post": {
+        "operationId": "recordVideo",
+        "summary": "Record Video",
+        "description": "Record a video of a webpage with optional scrolling. Supports WebM, MP4, and GIF output. Costs 5 credits per recording.",
+        "tags": [
+          "Video"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VideoRequest"
+              },
+              "examples": {
+                "basic": {
+                  "summary": "5-second recording",
+                  "value": {
+                    "url": "https://example.com",
+                    "duration": 5,
+                    "format": "mp4"
+                  }
+                },
+                "scrolling": {
+                  "summary": "Scrolling video",
+                  "value": {
+                    "url": "https://example.com",
+                    "duration": 10,
+                    "scrolling": true,
+                    "scrollSpeed": 150,
+                    "format": "webm"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Video recorded",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/X-Request-Id"
+              }
+            },
+            "content": {
+              "video/webm": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "video/mp4": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "image/gif": {
+                "schema": {
+                  "type": "string",
+                  "format": "binary"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "data": {
+                      "type": "string"
+                    },
+                    "format": {
+                      "type": "string"
+                    },
+                    "width": {
+                      "type": "integer"
+                    },
+                    "height": {
+                      "type": "integer"
+                    },
+                    "duration": {
+                      "type": "integer"
+                    },
+                    "fileSize": {
+                      "type": "integer"
+                    },
+                    "took": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "429": {
+            "description": "Quota exceeded"
+          },
+          "503": {
+            "description": "Server busy (max concurrent videos reached)"
+          }
+        }
+      }
+    },
+    "/v1/extract": {
+      "post": {
+        "operationId": "extractContent",
+        "summary": "Extract Web Content",
+        "description": "Extract content from any webpage as HTML, text, markdown, article, links, images, metadata, or structured data. Optimized for LLM consumption.",
+        "tags": [
+          "Extract"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractRequest"
+              },
+              "examples": {
+                "markdown": {
+                  "summary": "Extract as markdown",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "markdown"
+                  }
+                },
+                "article": {
+                  "summary": "Extract article (Readability)",
+                  "value": {
+                    "url": "https://blog.example.com/post",
+                    "type": "article"
+                  }
+                },
+                "structured": {
+                  "summary": "Structured extraction",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "structured",
+                    "maxLength": 10000
+                  }
+                },
+                "links": {
+                  "summary": "Extract all links",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "links"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Content extracted",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/X-Request-Id"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExtractResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Invalid API key"
+          }
+        }
+      },
+      "get": {
+        "operationId": "extractContentGet",
+        "summary": "Extract Web Content (GET)",
+        "tags": [
+          "Extract"
+        ],
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "html",
+                "text",
+                "markdown",
+                "article",
+                "links",
+                "images",
+                "metadata",
+                "structured"
+              ],
+              "default": "markdown"
+            }
+          },
+          {
+            "name": "selector",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "max_length",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "clean",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ],
+              "default": "true"
+            }
+          },
+          {
+            "name": "block_ads",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "block_cookies",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Content extracted"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      }
+    },
+    "/v1/analyze": {
+      "post": {
+        "operationId": "analyzeWebpage",
+        "summary": "AI-Powered Web Analysis",
+        "description": "Analyze any webpage using your own LLM API key (BYOK). Supports OpenAI and Anthropic. Optionally get structured JSON output via jsonSchema. Perfect for competitive intelligence, compliance audits, and data extraction.",
+        "tags": [
+          "Analyze"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AnalyzeRequest"
+              },
+              "examples": {
+                "basic": {
+                  "summary": "Basic analysis",
+                  "value": {
+                    "url": "https://example.com",
+                    "prompt": "Summarize the main content",
+                    "provider": "openai",
+                    "apiKey": "sk-..."
+                  }
+                },
+                "structured": {
+                  "summary": "Structured output",
+                  "value": {
+                    "url": "https://example.com/pricing",
+                    "prompt": "Extract all pricing plans",
+                    "provider": "openai",
+                    "apiKey": "sk-...",
+                    "jsonSchema": {
+                      "type": "object",
+                      "properties": {
+                        "plans": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "name": {
+                                "type": "string"
+                              },
+                              "price": {
+                                "type": "string"
+                              },
+                              "features": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "required": [
+                        "plans"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Invalid SnapAPI key"
+          },
+          "502": {
+            "description": "LLM provider error"
+          }
+        }
+      }
+    },
+    "/v1/usage": {
+      "get": {
+        "operationId": "getUsage",
+        "summary": "Get API Usage",
+        "description": "Check your current API usage and remaining quota.",
+        "tags": [
+          "Usage"
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UsageResponse"
+                },
+                "example": {
+                  "used": 150,
+                  "limit": 1000,
+                  "remaining": 850,
+                  "resetAt": "2026-03-01T00:00:00.000Z"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid API key"
+          }
+        }
+      }
+    },
+    "/v1/devices": {
+      "get": {
+        "operationId": "listDevices",
+        "summary": "List Device Presets",
+        "description": "Get all available device presets (desktop, mobile, tablet) for screenshot emulation.",
+        "tags": [
+          "Utilities"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Device presets grouped by category"
+          }
+        }
+      }
+    },
+    "/v1/capabilities": {
+      "get": {
+        "operationId": "getCapabilities",
+        "summary": "API Capabilities",
+        "description": "Get supported formats, features, and limits.",
+        "tags": [
+          "Utilities"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "API capabilities"
+          }
+        }
+      }
+    },
+    "/v1/scrape": {
+      "post": {
+        "operationId": "scrapeWebpage",
+        "summary": "Scrape Webpage",
+        "description": "Scrape content from any URL. Returns text, HTML, markdown, links, or metadata. Supports pagination for multi-page crawls, custom proxies, and resource blocking.",
+        "tags": [
+          "Scrape"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScrapeRequest"
+              },
+              "examples": {
+                "text": {
+                  "summary": "Scrape as plain text",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "text"
+                  }
+                },
+                "markdown": {
+                  "summary": "Scrape as markdown (LLM-ready)",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "markdown"
+                  }
+                },
+                "links": {
+                  "summary": "Extract all links",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "links"
+                  }
+                },
+                "metadata": {
+                  "summary": "Extract page metadata",
+                  "value": {
+                    "url": "https://example.com",
+                    "type": "metadata"
+                  }
+                },
+                "multipage": {
+                  "summary": "3-page scrape",
+                  "value": {
+                    "url": "https://example.com/blog",
+                    "type": "text",
+                    "pages": 3,
+                    "waitMs": 500
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Content scraped successfully",
+            "headers": {
+              "X-Request-Id": {
+                "$ref": "#/components/headers/X-Request-Id"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScrapeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error or invalid URL",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing API key",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit or quota exceeded",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Scrape failed (site unreachable or timeout)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "scrapeWebpageGet",
+        "summary": "Scrape Webpage (GET)",
+        "description": "Simple GET version of the scrape endpoint using query parameters.",
+        "tags": [
+          "Scrape"
+        ],
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uri"
+            },
+            "description": "URL to scrape"
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "text",
+                "html",
+                "links"
+              ],
+              "default": "text"
+            }
+          },
+          {
+            "name": "pages",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "wait_ms",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "block_resources",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "true",
+                "false"
+              ]
+            }
+          },
+          {
+            "name": "locale",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Content scraped",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScrapeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error"
+          },
+          "401": {
+            "description": "Invalid API key"
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "operationId": "register",
+        "summary": "Register",
+        "description": "Create a new account with email and password. A verification email is sent automatically. Rate limited to 3 requests/minute per IP.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8,
+                    "description": "Minimum 8 characters"
+                  },
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "description": "Optional display name"
+                  }
+                }
+              },
+              "example": {
+                "email": "user@example.com",
+                "password": "securepass123",
+                "name": "Jane Developer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Registration successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Email already registered or invalid input",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limited (3/min per IP)"
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "operationId": "login",
+        "summary": "Login",
+        "description": "Authenticate with email and password. Returns a JWT access token and sets a HttpOnly refresh token cookie. Rate limited to 5 requests/minute per IP.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email",
+                  "password"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                }
+              },
+              "example": {
+                "email": "user@example.com",
+                "password": "securepass123"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login successful. `refresh_token` set as HttpOnly cookie.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Account disabled"
+          },
+          "429": {
+            "description": "Rate limited (5/min per IP)"
+          }
+        }
+      }
+    },
+    "/auth/google": {
+      "post": {
+        "operationId": "googleAuth",
+        "summary": "Google OAuth",
+        "description": "Sign in or register using a Google ID token obtained from Google Sign-In.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "credential"
+                ],
+                "properties": {
+                  "credential": {
+                    "type": "string",
+                    "description": "Google ID token from Google Sign-In"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Google token"
+          },
+          "501": {
+            "description": "Google OAuth not configured"
+          }
+        }
+      }
+    },
+    "/auth/github": {
+      "post": {
+        "operationId": "githubAuth",
+        "summary": "GitHub OAuth",
+        "description": "Sign in or register using a GitHub OAuth authorization code.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "code"
+                ],
+                "properties": {
+                  "code": {
+                    "type": "string",
+                    "description": "GitHub OAuth authorization code"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid or expired authorization code"
+          },
+          "501": {
+            "description": "GitHub OAuth not configured"
+          }
+        }
+      }
+    },
+    "/auth/apple": {
+      "post": {
+        "operationId": "appleAuth",
+        "summary": "Apple Sign-In",
+        "description": "Sign in or register using an Apple ID token.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "idToken"
+                ],
+                "properties": {
+                  "idToken": {
+                    "type": "string",
+                    "description": "Apple ID token"
+                  },
+                  "user": {
+                    "type": "object",
+                    "description": "User info (only sent on first sign-in)",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "name": {
+                        "type": "object",
+                        "properties": {
+                          "firstName": {
+                            "type": "string"
+                          },
+                          "lastName": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Authentication successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid Apple token"
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "operationId": "refreshToken",
+        "summary": "Refresh Token",
+        "description": "Exchange the `refresh_token` HttpOnly cookie for a new access token. Rotates the refresh token on each use.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "New access token issued",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No refresh token cookie or token expired/invalid"
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "operationId": "logout",
+        "summary": "Logout",
+        "description": "Invalidate the current session and clear the refresh token cookie.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Logged out successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/me": {
+      "get": {
+        "operationId": "getCurrentUser",
+        "summary": "Get Current User",
+        "description": "Get the authenticated user's profile. Requires `Authorization: Bearer <token>` header.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User profile",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserObject"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Invalid or missing token"
+          }
+        }
+      }
+    },
+    "/auth/forgot-password": {
+      "post": {
+        "operationId": "forgotPassword",
+        "summary": "Forgot Password",
+        "description": "Send a password reset email. Always returns success to prevent email enumeration. Rate limited to 3 requests/hour per IP.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "email"
+                ],
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "If account exists, reset email sent"
+          },
+          "429": {
+            "description": "Rate limited"
+          }
+        }
+      }
+    },
+    "/auth/reset-password": {
+      "post": {
+        "operationId": "resetPassword",
+        "summary": "Reset Password",
+        "description": "Set a new password using a valid reset token (obtained from the password reset email).",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "token",
+                  "password"
+                ],
+                "properties": {
+                  "token": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string",
+                    "minLength": 8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password reset successful"
+          },
+          "400": {
+            "description": "Invalid or expired token"
+          }
+        }
+      }
+    },
+    "/auth/verify-email": {
+      "get": {
+        "operationId": "verifyEmail",
+        "summary": "Verify Email",
+        "description": "Verify email address using the token sent by registration email. Redirects to the dashboard on success.",
+        "tags": [
+          "Auth"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Email verification token"
+          }
+        ],
+        "responses": {
+          "302": {
+            "description": "Redirect to dashboard with `?verified=true` or `?verified=false`"
+          },
+          "400": {
+            "description": "Missing token"
+          }
+        }
+      }
+    },
+    "/dashboard/overview": {
+      "get": {
+        "operationId": "getDashboardOverview",
+        "summary": "Dashboard Overview",
+        "description": "Returns user profile, quota usage, monthly stats, daily usage chart data, and active subscription.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dashboard data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserObject"
+                    },
+                    "quota": {
+                      "type": "object",
+                      "properties": {
+                        "used": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "remaining": {
+                          "type": "integer"
+                        },
+                        "percentUsed": {
+                          "type": "integer"
+                        },
+                        "resetsAt": {
+                          "type": "string",
+                          "format": "date-time"
+                        }
+                      }
+                    },
+                    "stats": {
+                      "type": "object",
+                      "properties": {
+                        "totalRequests": {
+                          "type": "integer"
+                        },
+                        "successful": {
+                          "type": "integer"
+                        },
+                        "failed": {
+                          "type": "integer"
+                        },
+                        "avgResponseTime": {
+                          "type": "integer",
+                          "description": "ms"
+                        },
+                        "totalBytes": {
+                          "type": "integer"
+                        },
+                        "apiKeysCount": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "dailyUsage": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "date": {
+                            "type": "string"
+                          },
+                          "count": {
+                            "type": "integer"
+                          }
+                        }
+                      }
+                    },
+                    "subscription": {
+                      "type": "object",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Email not verified"
+          }
+        }
+      }
+    },
+    "/dashboard/api-keys": {
+      "get": {
+        "operationId": "listApiKeys",
+        "summary": "List API Keys",
+        "description": "Returns all API keys for the authenticated user including full key values.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API keys list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "keys": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ApiKey"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createApiKey",
+        "summary": "Create API Key",
+        "description": "Create a new API key. Maximum 10 keys per user. Full key value is only returned once on creation.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "default": "New Key"
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "screenshot",
+                        "pdf",
+                        "metadata",
+                        "batch"
+                      ]
+                    }
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "API key created \u2014 save it now, won't be shown again"
+          },
+          "400": {
+            "description": "Maximum 10 keys limit reached"
+          }
+        }
+      }
+    },
+    "/dashboard/api-keys/{id}": {
+      "patch": {
+        "operationId": "updateApiKey",
+        "summary": "Update API Key",
+        "description": "Update an API key's name, active status, or permissions.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "isActive": {
+                    "type": "boolean"
+                  },
+                  "permissions": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated"
+          },
+          "404": {
+            "description": "Key not found"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteApiKey",
+        "summary": "Delete API Key",
+        "description": "Delete an API key. Cannot delete the last remaining key.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted"
+          },
+          "400": {
+            "description": "Cannot delete last API key"
+          },
+          "404": {
+            "description": "Key not found"
+          }
+        }
+      }
+    },
+    "/dashboard/api-keys/{id}/regenerate": {
+      "post": {
+        "operationId": "regenerateApiKey",
+        "summary": "Regenerate API Key",
+        "description": "Generate a new key value for an existing key entry. Old key is immediately invalidated.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "New key value returned \u2014 save it now"
+          },
+          "404": {
+            "description": "Key not found"
+          }
+        }
+      }
+    },
+    "/dashboard/usage": {
+      "get": {
+        "operationId": "getUsageHistory",
+        "summary": "Usage History",
+        "description": "Paginated list of API calls with endpoint, options, response time, status code, and error details.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "apiKeyId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Filter by specific API key"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Usage records",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "records": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        },
+                        "hasMore": {
+                          "type": "boolean"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/billing": {
+      "get": {
+        "operationId": "getBilling",
+        "summary": "Billing Info",
+        "description": "Returns the current subscription and payment history.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Billing info",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "subscription": {
+                      "type": "object",
+                      "nullable": true
+                    },
+                    "payments": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/plans": {
+      "get": {
+        "operationId": "getPlans",
+        "summary": "Available Plans",
+        "description": "Returns all available subscription plans with pricing, quotas, and features.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Plan list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "plans": {
+                      "type": "array",
+                      "items": {
+                        "type": "object"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/dashboard/create-checkout": {
+      "post": {
+        "operationId": "createCheckout",
+        "summary": "Create Checkout",
+        "description": "Returns a Paddle price ID and customer email for the frontend to open a Paddle.js checkout overlay.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "planId",
+                  "interval"
+                ],
+                "properties": {
+                  "planId": {
+                    "type": "string"
+                  },
+                  "interval": {
+                    "type": "string",
+                    "enum": [
+                      "monthly",
+                      "yearly"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Paddle checkout params"
+          },
+          "404": {
+            "description": "Plan not found"
+          }
+        }
+      }
+    },
+    "/dashboard/cancel-subscription": {
+      "post": {
+        "operationId": "cancelSubscription",
+        "summary": "Cancel Subscription",
+        "description": "Cancel the active subscription at period end. Access remains until current billing period expires.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cancellation scheduled"
+          },
+          "400": {
+            "description": "No active subscription"
+          },
+          "502": {
+            "description": "Paddle API error"
+          }
+        }
+      }
+    },
+    "/dashboard/profile": {
+      "patch": {
+        "operationId": "updateProfile",
+        "summary": "Update Profile",
+        "description": "Update the authenticated user's display name.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Profile updated"
+          },
+          "400": {
+            "description": "No fields to update"
+          }
+        }
+      }
+    },
+    "/dashboard/change-password": {
+      "post": {
+        "operationId": "changePassword",
+        "summary": "Change Password",
+        "description": "Change password for email/password accounts. Not available for OAuth-only accounts.",
+        "tags": [
+          "Dashboard"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "currentPassword",
+                  "newPassword"
+                ],
+                "properties": {
+                  "currentPassword": {
+                    "type": "string"
+                  },
+                  "newPassword": {
+                    "type": "string",
+                    "minLength": 8
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Password updated"
+          },
+          "400": {
+            "description": "Current password incorrect or OAuth account"
+          }
+        }
+      }
+    },
+    "/storage/overview": {
+      "get": {
+        "operationId": "getStorageOverview",
+        "summary": "Storage Overview",
+        "description": "Returns vault usage, S3 configuration status, and plan-based storage limits.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Storage overview",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "vault": {
+                      "type": "object",
+                      "properties": {
+                        "enabled": {
+                          "type": "boolean"
+                        },
+                        "active": {
+                          "type": "boolean"
+                        },
+                        "used": {
+                          "type": "integer"
+                        },
+                        "limit": {
+                          "type": "integer"
+                        }
+                      }
+                    },
+                    "userS3": {
+                      "type": "object",
+                      "properties": {
+                        "configured": {
+                          "type": "boolean"
+                        },
+                        "bucket": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "region": {
+                          "type": "string",
+                          "nullable": true
+                        }
+                      }
+                    },
+                    "plan": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/vault-preference": {
+      "post": {
+        "operationId": "setVaultPreference",
+        "summary": "Set Vault Preference",
+        "description": "Enable or disable SnapAPI cloud storage (Vault). Requires a paid plan.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "enabled"
+                ],
+                "properties": {
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Preference saved"
+          },
+          "403": {
+            "description": "Premium Vault requires a paid plan"
+          }
+        }
+      }
+    },
+    "/storage/files": {
+      "get": {
+        "operationId": "listStoredFiles",
+        "summary": "List Stored Files",
+        "description": "Paginated list of stored screenshots with signed download URLs.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 50,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 0
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "local",
+                "user_s3"
+              ]
+            },
+            "description": "Filter by storage type"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Files list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "files": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/StoredFile"
+                      }
+                    },
+                    "total": {
+                      "type": "integer"
+                    },
+                    "hasMore": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/storage/files/{id}": {
+      "get": {
+        "operationId": "getStoredFile",
+        "summary": "Get Stored File",
+        "description": "Serve a stored file directly (local storage) or redirect to a signed S3 URL. Supports JWT auth via `token` query parameter for use in `<img>` tags.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "thumb",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "0",
+                "1"
+              ]
+            },
+            "description": "Return thumbnail instead of full file"
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "JWT token as alternative to Authorization header (for <img> tags)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File content"
+          },
+          "302": {
+            "description": "Redirect to S3 signed URL"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "File not found"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteStoredFile",
+        "summary": "Delete Stored File",
+        "description": "Permanently delete a stored file.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File deleted"
+          },
+          "404": {
+            "description": "File not found"
+          }
+        }
+      }
+    },
+    "/storage/user-s3": {
+      "get": {
+        "operationId": "getUserS3Config",
+        "summary": "Get S3 Configuration",
+        "description": "Returns the user's custom S3 configuration (access key ID masked).",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "S3 config (access key masked)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "configured": {
+                      "type": "boolean"
+                    },
+                    "bucket": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "region": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "accessKeyId": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Partially masked"
+                    },
+                    "endpoint": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "operationId": "saveUserS3Config",
+        "summary": "Save S3 Configuration",
+        "description": "Save custom S3 credentials for storing screenshots in your own bucket.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "bucket",
+                  "region",
+                  "accessKeyId"
+                ],
+                "properties": {
+                  "bucket": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  },
+                  "accessKeyId": {
+                    "type": "string"
+                  },
+                  "secretAccessKey": {
+                    "type": "string",
+                    "description": "Required for new configs; optional to preserve existing value"
+                  },
+                  "endpoint": {
+                    "type": "string",
+                    "description": "Custom S3 endpoint for non-AWS providers (e.g., Cloudflare R2)"
+                  }
+                }
+              },
+              "examples": {
+                "aws": {
+                  "summary": "AWS S3",
+                  "value": {
+                    "bucket": "my-screenshots",
+                    "region": "us-east-1",
+                    "accessKeyId": "AKIA...",
+                    "secretAccessKey": "..."
+                  }
+                },
+                "r2": {
+                  "summary": "Cloudflare R2",
+                  "value": {
+                    "bucket": "my-screenshots",
+                    "region": "auto",
+                    "accessKeyId": "...",
+                    "secretAccessKey": "...",
+                    "endpoint": "https://<accountid>.r2.cloudflarestorage.com"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "S3 settings saved"
+          },
+          "400": {
+            "description": "Validation error"
+          }
+        }
+      },
+      "delete": {
+        "operationId": "deleteUserS3Config",
+        "summary": "Delete S3 Configuration",
+        "description": "Remove the custom S3 configuration.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "S3 settings removed"
+          }
+        }
+      }
+    },
+    "/storage/user-s3/test": {
+      "post": {
+        "operationId": "testUserS3Connection",
+        "summary": "Test S3 Connection",
+        "description": "Test connectivity to the configured S3 bucket by attempting a put/get/delete operation.",
+        "tags": [
+          "Storage"
+        ],
+        "security": [
+          {
+            "BearerAuth": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "bucket",
+                  "region",
+                  "accessKeyId"
+                ],
+                "properties": {
+                  "bucket": {
+                    "type": "string"
+                  },
+                  "region": {
+                    "type": "string"
+                  },
+                  "accessKeyId": {
+                    "type": "string"
+                  },
+                  "secretAccessKey": {
+                    "type": "string"
+                  },
+                  "endpoint": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Connection test passed"
+          },
+          "400": {
+            "description": "Connection test failed \u2014 check credentials and bucket name"
+          }
+        }
+      }
+    },
+    "/webhooks/paddle": {
+      "post": {
+        "operationId": "paddleWebhook",
+        "summary": "Paddle Webhook",
+        "description": "Receives Paddle billing events (subscription created/updated/canceled, payment completed/failed). Validates the `Paddle-Signature` header using HMAC-SHA256. This endpoint is for Paddle servers only \u2014 not for direct API consumers.",
+        "tags": [
+          "Webhooks"
+        ],
+        "security": [],
+        "parameters": [
+          {
+            "name": "Paddle-Signature",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "HMAC-SHA256 signature: `ts=<timestamp>;h1=<hash>`"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "event_id": {
+                    "type": "string"
+                  },
+                  "event_type": {
+                    "type": "string",
+                    "enum": [
+                      "subscription.created",
+                      "subscription.activated",
+                      "subscription.updated",
+                      "subscription.canceled",
+                      "subscription.paused",
+                      "subscription.resumed",
+                      "subscription.past_due",
+                      "transaction.completed",
+                      "transaction.payment_failed"
+                    ]
+                  },
+                  "occurred_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "notification_id": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Webhook received"
+          },
+          "401": {
+            "description": "Invalid signature"
+          }
+        }
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Screenshot",
+      "description": "Screenshot, PDF, and batch capture"
+    },
+    {
+      "name": "PDF",
+      "description": "PDF generation from URLs and HTML"
+    },
+    {
+      "name": "Video",
+      "description": "Video recording of webpages"
+    },
+    {
+      "name": "Extract",
+      "description": "Web content extraction (HTML, text, markdown, article, structured)"
+    },
+    {
+      "name": "Analyze",
+      "description": "AI-powered web analysis with your own LLM key (BYOK)"
+    },
+    {
+      "name": "Usage",
+      "description": "API usage and quota management"
+    },
+    {
+      "name": "Health",
+      "description": "Health check and monitoring"
+    },
+    {
+      "name": "Utilities",
+      "description": "Device presets and API capabilities"
+    },
+    {
+      "name": "Auth",
+      "description": "Authentication \u2014 register, login, OAuth, password reset, email verification"
+    },
+    {
+      "name": "Dashboard",
+      "description": "User dashboard \u2014 quota overview, API key management, billing, usage history"
+    },
+    {
+      "name": "Storage",
+      "description": "File storage \u2014 list, retrieve, delete stored files; configure custom S3"
+    },
+    {
+      "name": "Scrape",
+      "description": "Web scraping \u2014 extract text, HTML, links, markdown, or metadata from any URL"
+    },
+    {
+      "name": "Webhooks",
+      "description": "Paddle billing webhooks (server-to-server)"
+    }
+  ]
+}

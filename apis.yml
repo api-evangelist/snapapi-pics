@@ -1,0 +1,188 @@
+aid: snapapi-pics
+url: https://raw.githubusercontent.com/api-evangelist/snapapi-pics/refs/heads/main/apis.yml
+name: SnapAPI
+kind: company
+description: SnapAPI is a REST API for turning any URL into visual captures or structured
+  data with a single call - screenshots (PNG, JPEG, WebP, AVIF), full-page PDFs, scroll
+  videos (MP4, WebM, GIF), markdown/text/metadata extraction tuned for AI pipelines,
+  and multi-page scraping with anti-bot stealth and proxy support. It also offers
+  BYOK AI page analysis (OpenAI/Anthropic), batch and async processing with webhooks,
+  device emulation, ad/cookie-banner blocking, caching, and optional cloud storage,
+  all powered by headless Chromium. Free tier of 200 requests/month, no credit card
+  required, with X-Api-Key authentication and eight official SDKs.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Screenshots
+- PDF
+- Video
+- Web Scraping
+- Content Extraction
+- Markdown
+- Metadata
+- Headless Chromium
+- Anti-Bot
+- Proxies
+- AI
+- Web Capture
+- REST
+- Developer Tools
+created: '2026-07-16'
+modified: '2026-07-16'
+specificationVersion: '0.21'
+apis:
+- aid: snapapi-pics:snapapi-screenshot-api
+  name: SnapAPI Screenshot API
+  tags:
+  - Screenshots
+  - PNG
+  - JPEG
+  - WebP
+  - AVIF
+  - Batch
+  - Async
+  - Web Capture
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Capture pixel-perfect screenshots of any web page via POST or GET /v1/screenshot
+    in PNG, JPEG, WebP, or AVIF, with full-page capture, device emulation, dark mode,
+    ad/tracker/cookie-banner blocking, and custom CSS/JS injection. Process up to 100
+    URLs at once with POST /v1/screenshot/batch, and poll batch or async jobs by jobId.
+- aid: snapapi-pics:snapapi-pdf-api
+  name: SnapAPI PDF API
+  tags:
+  - PDF
+  - HTML to PDF
+  - Document Generation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Generate full-page PDFs from a URL or raw HTML with POST /v1/pdf, rendered
+    through headless Chromium with the same page-preparation controls as the screenshot
+    surface.
+- aid: snapapi-pics:snapapi-video-api
+  name: SnapAPI Video API
+  tags:
+  - Video
+  - MP4
+  - WebM
+  - GIF
+  - Scroll Animation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Record a web page as video with POST /v1/video, producing WebM, MP4,
+    or GIF output including optional scroll animation of the full page.
+- aid: snapapi-pics:snapapi-extract-api
+  name: SnapAPI Content Extraction API
+  tags:
+  - Content Extraction
+  - Markdown
+  - Text
+  - Metadata
+  - AI
+  - Data Extraction
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Extract HTML, plain text, markdown, article content, links, images,
+    or metadata from any page via POST or GET /v1/extract, with markdown output tuned
+    for LLM and AI-pipeline consumption.
+- aid: snapapi-pics:snapapi-scrape-api
+  name: SnapAPI Scrape API
+  tags:
+  - Web Scraping
+  - Anti-Bot
+  - Stealth
+  - Proxies
+  - Pagination
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Scrape single or multiple pages with POST or GET /v1/scrape, including
+    pagination handling, anti-bot stealth, and proxy support for reliably collecting
+    data from protected sites.
+- aid: snapapi-pics:snapapi-analyze-api
+  name: SnapAPI AI Analyze API
+  tags:
+  - AI
+  - LLM
+  - BYOK
+  - Page Analysis
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Run AI analysis over a rendered web page with POST /v1/analyze using
+    your own OpenAI or Anthropic API key (bring-your-own-key), combining SnapAPI's
+    rendering with an LLM of your choice.
+- aid: snapapi-pics:snapapi-account-api
+  name: SnapAPI Usage & Capabilities API
+  tags:
+  - Usage
+  - Quota
+  - Capabilities
+  - Devices
+  - Account
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  properties:
+  - url: https://snapapi.pics/docs.html
+    type: Documentation
+  - url: openapi/snapapi-pics-openapi.json
+    type: OpenAPI
+  description: Check quota and consumption with GET /v1/usage, list device presets
+    for emulation with GET /v1/devices, and discover supported formats and feature
+    limits with GET /v1/capabilities.
+common:
+- type: Website
+  url: https://snapapi.pics
+- type: Documentation
+  url: https://snapapi.pics/docs.html
+- type: APIReference
+  url: https://api.snapapi.pics/v1/docs
+- type: OpenAPI
+  url: openapi/snapapi-pics-openapi.json
+- type: Signup
+  url: https://snapapi.pics/register.html
+- type: Pricing
+  url: https://snapapi.pics/pricing.html
+- type: ChangeLog
+  url: https://snapapi.pics/changelog.html
+- type: StatusPage
+  url: https://snapapi.pics/status.html
+- type: Blog
+  url: https://snapapi.pics/blog.html
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
