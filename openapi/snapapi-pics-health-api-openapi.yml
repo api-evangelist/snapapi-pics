@@ -1,0 +1,127 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Health API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Health
+  description: Health check and monitoring
+paths:
+  /v1/ping:
+    get:
+      operationId: ping
+      summary: Ping
+      description: Simple health check. Returns OK status and timestamp.
+      tags:
+      - Health
+      security: []
+      responses:
+        '200':
+          description: OK
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  timestamp:
+                    type: integer
+                    example: 1708372800000
+              example:
+                status: ok
+                timestamp: 1708372800000
+  /health:
+    get:
+      operationId: healthCheck
+      summary: Health Check
+      tags:
+      - Health
+      security: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+  /health/detailed:
+    get:
+      operationId: healthDetailed
+      summary: Detailed Health Check
+      description: Returns status of database, Redis, and job queue.
+      tags:
+      - Health
+      security: []
+      responses:
+        '200':
+          description: All systems healthy
+        '503':
+          description: One or more systems degraded
+components:
+  headers:
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

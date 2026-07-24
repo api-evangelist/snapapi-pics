@@ -1,0 +1,109 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Webhooks API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Webhooks
+  description: Paddle billing webhooks (server-to-server)
+paths:
+  /webhooks/paddle:
+    post:
+      operationId: paddleWebhook
+      summary: Paddle Webhook
+      description: Receives Paddle billing events (subscription created/updated/canceled, payment completed/failed). Validates the `Paddle-Signature` header using HMAC-SHA256. This endpoint is for Paddle servers only — not for direct API consumers.
+      tags:
+      - Webhooks
+      security: []
+      parameters:
+      - name: Paddle-Signature
+        in: header
+        required: true
+        schema:
+          type: string
+        description: 'HMAC-SHA256 signature: `ts=<timestamp>;h1=<hash>`'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                event_id:
+                  type: string
+                event_type:
+                  type: string
+                  enum:
+                  - subscription.created
+                  - subscription.activated
+                  - subscription.updated
+                  - subscription.canceled
+                  - subscription.paused
+                  - subscription.resumed
+                  - subscription.past_due
+                  - transaction.completed
+                  - transaction.payment_failed
+                occurred_at:
+                  type: string
+                  format: date-time
+                notification_id:
+                  type: string
+                data:
+                  type: object
+      responses:
+        '200':
+          description: Webhook received
+        '401':
+          description: Invalid signature
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

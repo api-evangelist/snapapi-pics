@@ -1,0 +1,395 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Storage API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Storage
+  description: File storage — list, retrieve, delete stored files; configure custom S3
+paths:
+  /storage/overview:
+    get:
+      operationId: getStorageOverview
+      summary: Storage Overview
+      description: Returns vault usage, S3 configuration status, and plan-based storage limits.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: Storage overview
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  vault:
+                    type: object
+                    properties:
+                      enabled:
+                        type: boolean
+                      active:
+                        type: boolean
+                      used:
+                        type: integer
+                      limit:
+                        type: integer
+                  userS3:
+                    type: object
+                    properties:
+                      configured:
+                        type: boolean
+                      bucket:
+                        type: string
+                        nullable: true
+                      region:
+                        type: string
+                        nullable: true
+                  plan:
+                    type: string
+  /storage/vault-preference:
+    post:
+      operationId: setVaultPreference
+      summary: Set Vault Preference
+      description: Enable or disable SnapAPI cloud storage (Vault). Requires a paid plan.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - enabled
+              properties:
+                enabled:
+                  type: boolean
+      responses:
+        '200':
+          description: Preference saved
+        '403':
+          description: Premium Vault requires a paid plan
+  /storage/files:
+    get:
+      operationId: listStoredFiles
+      summary: List Stored Files
+      description: Paginated list of stored screenshots with signed download URLs.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          default: 50
+          maximum: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - local
+          - user_s3
+        description: Filter by storage type
+      responses:
+        '200':
+          description: Files list
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  files:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StoredFile'
+                  total:
+                    type: integer
+                  hasMore:
+                    type: boolean
+  /storage/files/{id}:
+    get:
+      operationId: getStoredFile
+      summary: Get Stored File
+      description: Serve a stored file directly (local storage) or redirect to a signed S3 URL. Supports JWT auth via `token` query parameter for use in `<img>` tags.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: thumb
+        in: query
+        schema:
+          type: string
+          enum:
+          - '0'
+          - '1'
+        description: Return thumbnail instead of full file
+      - name: token
+        in: query
+        schema:
+          type: string
+        description: JWT token as alternative to Authorization header (for <img> tags)
+      responses:
+        '200':
+          description: File content
+        '302':
+          description: Redirect to S3 signed URL
+        '401':
+          description: Unauthorized
+        '404':
+          description: File not found
+    delete:
+      operationId: deleteStoredFile
+      summary: Delete Stored File
+      description: Permanently delete a stored file.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: File deleted
+        '404':
+          description: File not found
+  /storage/user-s3:
+    get:
+      operationId: getUserS3Config
+      summary: Get S3 Configuration
+      description: Returns the user's custom S3 configuration (access key ID masked).
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: S3 config (access key masked)
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  configured:
+                    type: boolean
+                  bucket:
+                    type: string
+                    nullable: true
+                  region:
+                    type: string
+                    nullable: true
+                  accessKeyId:
+                    type: string
+                    nullable: true
+                    description: Partially masked
+                  endpoint:
+                    type: string
+                    nullable: true
+    post:
+      operationId: saveUserS3Config
+      summary: Save S3 Configuration
+      description: Save custom S3 credentials for storing screenshots in your own bucket.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - bucket
+              - region
+              - accessKeyId
+              properties:
+                bucket:
+                  type: string
+                region:
+                  type: string
+                accessKeyId:
+                  type: string
+                secretAccessKey:
+                  type: string
+                  description: Required for new configs; optional to preserve existing value
+                endpoint:
+                  type: string
+                  description: Custom S3 endpoint for non-AWS providers (e.g., Cloudflare R2)
+            examples:
+              aws:
+                summary: AWS S3
+                value:
+                  bucket: my-screenshots
+                  region: us-east-1
+                  accessKeyId: AKIA...
+                  secretAccessKey: '...'
+              r2:
+                summary: Cloudflare R2
+                value:
+                  bucket: my-screenshots
+                  region: auto
+                  accessKeyId: '...'
+                  secretAccessKey: '...'
+                  endpoint: https://<accountid>.r2.cloudflarestorage.com
+      responses:
+        '200':
+          description: S3 settings saved
+        '400':
+          description: Validation error
+    delete:
+      operationId: deleteUserS3Config
+      summary: Delete S3 Configuration
+      description: Remove the custom S3 configuration.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: S3 settings removed
+  /storage/user-s3/test:
+    post:
+      operationId: testUserS3Connection
+      summary: Test S3 Connection
+      description: Test connectivity to the configured S3 bucket by attempting a put/get/delete operation.
+      tags:
+      - Storage
+      security:
+      - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - bucket
+              - region
+              - accessKeyId
+              properties:
+                bucket:
+                  type: string
+                region:
+                  type: string
+                accessKeyId:
+                  type: string
+                secretAccessKey:
+                  type: string
+                endpoint:
+                  type: string
+      responses:
+        '200':
+          description: Connection test passed
+        '400':
+          description: Connection test failed — check credentials and bucket name
+components:
+  schemas:
+    StoredFile:
+      type: object
+      properties:
+        id:
+          type: string
+        storageType:
+          type: string
+          enum:
+          - local
+          - user_s3
+        originalUrl:
+          type: string
+        format:
+          type: string
+        fileSize:
+          type: integer
+        width:
+          type: integer
+          nullable: true
+        height:
+          type: integer
+          nullable: true
+        url:
+          type: string
+          nullable: true
+          description: Signed URL to access the file
+        thumbnailUrl:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

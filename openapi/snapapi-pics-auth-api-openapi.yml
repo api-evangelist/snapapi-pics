@@ -1,0 +1,435 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Auth API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Auth
+  description: Authentication — register, login, OAuth, password reset, email verification
+paths:
+  /auth/register:
+    post:
+      operationId: register
+      summary: Register
+      description: Create a new account with email and password. A verification email is sent automatically. Rate limited to 3 requests/minute per IP.
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+                  minLength: 8
+                  description: Minimum 8 characters
+                name:
+                  type: string
+                  maxLength: 100
+                  description: Optional display name
+            example:
+              email: user@example.com
+              password: securepass123
+              name: Jane Developer
+      responses:
+        '200':
+          description: Registration successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Email already registered or invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limited (3/min per IP)
+  /auth/login:
+    post:
+      operationId: login
+      summary: Login
+      description: Authenticate with email and password. Returns a JWT access token and sets a HttpOnly refresh token cookie. Rate limited to 5 requests/minute per IP.
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              - password
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+            example:
+              email: user@example.com
+              password: securepass123
+      responses:
+        '200':
+          description: Login successful. `refresh_token` set as HttpOnly cookie.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Account disabled
+        '429':
+          description: Rate limited (5/min per IP)
+  /auth/google:
+    post:
+      operationId: googleAuth
+      summary: Google OAuth
+      description: Sign in or register using a Google ID token obtained from Google Sign-In.
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - credential
+              properties:
+                credential:
+                  type: string
+                  description: Google ID token from Google Sign-In
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Invalid Google token
+        '501':
+          description: Google OAuth not configured
+  /auth/github:
+    post:
+      operationId: githubAuth
+      summary: GitHub OAuth
+      description: Sign in or register using a GitHub OAuth authorization code.
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - code
+              properties:
+                code:
+                  type: string
+                  description: GitHub OAuth authorization code
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Invalid or expired authorization code
+        '501':
+          description: GitHub OAuth not configured
+  /auth/apple:
+    post:
+      operationId: appleAuth
+      summary: Apple Sign-In
+      description: Sign in or register using an Apple ID token.
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - idToken
+              properties:
+                idToken:
+                  type: string
+                  description: Apple ID token
+                user:
+                  type: object
+                  description: User info (only sent on first sign-in)
+                  properties:
+                    email:
+                      type: string
+                      format: email
+                    name:
+                      type: object
+                      properties:
+                        firstName:
+                          type: string
+                        lastName:
+                          type: string
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Invalid Apple token
+  /auth/refresh:
+    post:
+      operationId: refreshToken
+      summary: Refresh Token
+      description: Exchange the `refresh_token` HttpOnly cookie for a new access token. Rotates the refresh token on each use.
+      tags:
+      - Auth
+      security: []
+      responses:
+        '200':
+          description: New access token issued
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '401':
+          description: No refresh token cookie or token expired/invalid
+  /auth/logout:
+    post:
+      operationId: logout
+      summary: Logout
+      description: Invalidate the current session and clear the refresh token cookie.
+      tags:
+      - Auth
+      security: []
+      responses:
+        '200':
+          description: Logged out successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+  /auth/me:
+    get:
+      operationId: getCurrentUser
+      summary: Get Current User
+      description: 'Get the authenticated user''s profile. Requires `Authorization: Bearer <token>` header.'
+      tags:
+      - Auth
+      security:
+      - BearerAuth: []
+      responses:
+        '200':
+          description: User profile
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/UserObject'
+        '401':
+          description: Invalid or missing token
+  /auth/forgot-password:
+    post:
+      operationId: forgotPassword
+      summary: Forgot Password
+      description: Send a password reset email. Always returns success to prevent email enumeration. Rate limited to 3 requests/hour per IP.
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - email
+              properties:
+                email:
+                  type: string
+                  format: email
+      responses:
+        '200':
+          description: If account exists, reset email sent
+        '429':
+          description: Rate limited
+  /auth/reset-password:
+    post:
+      operationId: resetPassword
+      summary: Reset Password
+      description: Set a new password using a valid reset token (obtained from the password reset email).
+      tags:
+      - Auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - token
+              - password
+              properties:
+                token:
+                  type: string
+                password:
+                  type: string
+                  minLength: 8
+      responses:
+        '200':
+          description: Password reset successful
+        '400':
+          description: Invalid or expired token
+  /auth/verify-email:
+    get:
+      operationId: verifyEmail
+      summary: Verify Email
+      description: Verify email address using the token sent by registration email. Redirects to the dashboard on success.
+      tags:
+      - Auth
+      security: []
+      parameters:
+      - name: token
+        in: query
+        required: true
+        schema:
+          type: string
+        description: Email verification token
+      responses:
+        '302':
+          description: Redirect to dashboard with `?verified=true` or `?verified=false`
+        '400':
+          description: Missing token
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        user:
+          $ref: '#/components/schemas/UserObject'
+        accessToken:
+          type: string
+          description: JWT access token (15 min expiry). Store in memory only.
+        message:
+          type: string
+    UserObject:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        plan:
+          type: string
+          enum:
+          - free
+          - starter
+          - pro
+        avatarUrl:
+          type: string
+          nullable: true
+        emailVerified:
+          type: boolean
+        isAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

@@ -1,0 +1,196 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Analyze
+  description: AI-powered web analysis with your own LLM key (BYOK)
+paths:
+  /v1/analyze:
+    post:
+      operationId: analyzeWebpage
+      summary: AI-Powered Web Analysis
+      description: Analyze any webpage using your own LLM API key (BYOK). Supports OpenAI and Anthropic. Optionally get structured JSON output via jsonSchema. Perfect for competitive intelligence, compliance audits, and data extraction.
+      tags:
+      - Analyze
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnalyzeRequest'
+            examples:
+              basic:
+                summary: Basic analysis
+                value:
+                  url: https://example.com
+                  prompt: Summarize the main content
+                  provider: openai
+                  apiKey: sk-...
+              structured:
+                summary: Structured output
+                value:
+                  url: https://example.com/pricing
+                  prompt: Extract all pricing plans
+                  provider: openai
+                  apiKey: sk-...
+                  jsonSchema:
+                    type: object
+                    properties:
+                      plans:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            price:
+                              type: string
+                            features:
+                              type: array
+                              items:
+                                type: string
+                    required:
+                    - plans
+                    additionalProperties: false
+      responses:
+        '200':
+          description: Analysis complete
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnalyzeResponse'
+        '400':
+          description: Validation error
+        '401':
+          description: Invalid SnapAPI key
+        '502':
+          description: LLM provider error
+components:
+  schemas:
+    AnalyzeRequest:
+      type: object
+      required:
+      - url
+      - prompt
+      - apiKey
+      properties:
+        url:
+          type: string
+          format: uri
+        prompt:
+          type: string
+          minLength: 1
+          maxLength: 5000
+          description: Analysis prompt for the LLM
+        provider:
+          type: string
+          enum:
+          - openai
+          - anthropic
+          default: openai
+        apiKey:
+          type: string
+          description: Your own LLM provider API key (BYOK)
+        model:
+          type: string
+          description: Model override (e.g. gpt-4o, claude-sonnet-4-20250514)
+        jsonSchema:
+          type: object
+          description: JSON schema for structured LLM output
+        timeout:
+          type: integer
+          default: 30000
+        waitFor:
+          type: string
+        blockAds:
+          type: boolean
+          default: true
+        blockCookieBanners:
+          type: boolean
+          default: true
+        includeScreenshot:
+          type: boolean
+          default: false
+        includeMetadata:
+          type: boolean
+          default: true
+        maxContentLength:
+          type: integer
+          default: 50000
+    AnalyzeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        url:
+          type: string
+        metadata:
+          type: object
+          properties:
+            url:
+              type: string
+            title:
+              type: string
+            description:
+              type: string
+        analysis:
+          description: LLM analysis (string or structured object)
+        provider:
+          type: string
+        model:
+          type: string
+        responseTime:
+          type: integer
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

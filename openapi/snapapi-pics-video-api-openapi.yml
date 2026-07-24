@@ -1,0 +1,201 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Video API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Video
+  description: Video recording of webpages
+paths:
+  /v1/video:
+    post:
+      operationId: recordVideo
+      summary: Record Video
+      description: Record a video of a webpage with optional scrolling. Supports WebM, MP4, and GIF output. Costs 5 credits per recording.
+      tags:
+      - Video
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VideoRequest'
+            examples:
+              basic:
+                summary: 5-second recording
+                value:
+                  url: https://example.com
+                  duration: 5
+                  format: mp4
+              scrolling:
+                summary: Scrolling video
+                value:
+                  url: https://example.com
+                  duration: 10
+                  scrolling: true
+                  scrollSpeed: 150
+                  format: webm
+      responses:
+        '200':
+          description: Video recorded
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'
+          content:
+            video/webm:
+              schema:
+                type: string
+                format: binary
+            video/mp4:
+              schema:
+                type: string
+                format: binary
+            image/gif:
+              schema:
+                type: string
+                format: binary
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                  data:
+                    type: string
+                  format:
+                    type: string
+                  width:
+                    type: integer
+                  height:
+                    type: integer
+                  duration:
+                    type: integer
+                  fileSize:
+                    type: integer
+                  took:
+                    type: integer
+        '400':
+          description: Validation error
+        '429':
+          description: Quota exceeded
+        '503':
+          description: Server busy (max concurrent videos reached)
+components:
+  headers:
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
+  schemas:
+    VideoRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          format: uri
+        format:
+          type: string
+          enum:
+          - webm
+          - mp4
+          - gif
+          default: webm
+        width:
+          type: integer
+          minimum: 320
+          maximum: 1920
+          default: 1280
+        height:
+          type: integer
+          minimum: 240
+          maximum: 1080
+          default: 720
+        duration:
+          type: integer
+          minimum: 1
+          maximum: 30
+          default: 5
+          description: Duration in seconds
+        fps:
+          type: integer
+          minimum: 10
+          maximum: 30
+          default: 25
+        scrolling:
+          type: boolean
+          default: false
+        scrollSpeed:
+          type: integer
+          default: 100
+        darkMode:
+          type: boolean
+          default: false
+        blockAds:
+          type: boolean
+          default: false
+        blockCookieBanners:
+          type: boolean
+          default: false
+        delay:
+          type: integer
+          default: 0
+        responseType:
+          type: string
+          enum:
+          - binary
+          - base64
+          - json
+          default: binary
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

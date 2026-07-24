@@ -1,0 +1,240 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Extract API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Extract
+  description: Web content extraction (HTML, text, markdown, article, structured)
+paths:
+  /v1/extract:
+    post:
+      operationId: extractContent
+      summary: Extract Web Content
+      description: Extract content from any webpage as HTML, text, markdown, article, links, images, metadata, or structured data. Optimized for LLM consumption.
+      tags:
+      - Extract
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractRequest'
+            examples:
+              markdown:
+                summary: Extract as markdown
+                value:
+                  url: https://example.com
+                  type: markdown
+              article:
+                summary: Extract article (Readability)
+                value:
+                  url: https://blog.example.com/post
+                  type: article
+              structured:
+                summary: Structured extraction
+                value:
+                  url: https://example.com
+                  type: structured
+                  maxLength: 10000
+              links:
+                summary: Extract all links
+                value:
+                  url: https://example.com
+                  type: links
+      responses:
+        '200':
+          description: Content extracted
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExtractResponse'
+        '400':
+          description: Validation error
+        '401':
+          description: Invalid API key
+    get:
+      operationId: extractContentGet
+      summary: Extract Web Content (GET)
+      tags:
+      - Extract
+      parameters:
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uri
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - html
+          - text
+          - markdown
+          - article
+          - links
+          - images
+          - metadata
+          - structured
+          default: markdown
+      - name: selector
+        in: query
+        schema:
+          type: string
+      - name: max_length
+        in: query
+        schema:
+          type: integer
+      - name: clean
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+          default: 'true'
+      - name: block_ads
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+      - name: block_cookies
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+      responses:
+        '200':
+          description: Content extracted
+        '400':
+          description: Validation error
+components:
+  headers:
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
+  schemas:
+    ExtractResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        type:
+          type: string
+        url:
+          type: string
+        data:
+          description: Extracted content (format depends on type param)
+        responseTime:
+          type: integer
+    ExtractRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          format: uri
+        type:
+          type: string
+          enum:
+          - html
+          - text
+          - markdown
+          - article
+          - links
+          - images
+          - metadata
+          - structured
+          default: markdown
+        selector:
+          type: string
+          description: CSS selector to target
+        waitFor:
+          type: string
+          description: Wait for selector before extracting
+        timeout:
+          type: integer
+          minimum: 1000
+          maximum: 60000
+          default: 30000
+        darkMode:
+          type: boolean
+          default: false
+        blockAds:
+          type: boolean
+          default: false
+        blockCookieBanners:
+          type: boolean
+          default: false
+        includeImages:
+          type: boolean
+          default: true
+        maxLength:
+          type: integer
+          minimum: 100
+          maximum: 500000
+        cleanOutput:
+          type: boolean
+          default: true
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh

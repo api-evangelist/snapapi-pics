@@ -1,0 +1,268 @@
+openapi: 3.1.0
+info:
+  title: SnapAPI - Screenshot & Web Data Analyze Scrape API
+  version: 2.0.0
+  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
+
+
+    ## Authentication
+
+
+    All API endpoints (except Auth and Health) require one of:
+
+    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
+
+    - `Authorization: Bearer sk_live_xxx` header
+
+    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
+
+
+    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
+
+
+    ## Rate Limits
+
+
+    | Plan | Requests/month | Rate |
+
+    |------|---------------|------|
+
+    | Free | 100 | 10/min |
+
+    | Starter | 5,000 | 60/min |
+
+    | Pro | 50,000 | 300/min |
+
+
+    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  contact:
+    email: support@snapapi.pics
+    url: https://snapapi.pics
+servers:
+- url: https://api.snapapi.pics
+  description: Production
+security:
+- ApiKeyAuth: []
+tags:
+- name: Scrape
+  description: Web scraping — extract text, HTML, links, markdown, or metadata from any URL
+paths:
+  /v1/scrape:
+    post:
+      operationId: scrapeWebpage
+      summary: Scrape Webpage
+      description: Scrape content from any URL. Returns text, HTML, markdown, links, or metadata. Supports pagination for multi-page crawls, custom proxies, and resource blocking.
+      tags:
+      - Scrape
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScrapeRequest'
+            examples:
+              text:
+                summary: Scrape as plain text
+                value:
+                  url: https://example.com
+                  type: text
+              markdown:
+                summary: Scrape as markdown (LLM-ready)
+                value:
+                  url: https://example.com
+                  type: markdown
+              links:
+                summary: Extract all links
+                value:
+                  url: https://example.com
+                  type: links
+              metadata:
+                summary: Extract page metadata
+                value:
+                  url: https://example.com
+                  type: metadata
+              multipage:
+                summary: 3-page scrape
+                value:
+                  url: https://example.com/blog
+                  type: text
+                  pages: 3
+                  waitMs: 500
+      responses:
+        '200':
+          description: Content scraped successfully
+          headers:
+            X-Request-Id:
+              $ref: '#/components/headers/X-Request-Id'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScrapeResponse'
+        '400':
+          description: Validation error or invalid URL
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: Rate limit or quota exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '500':
+          description: Scrape failed (site unreachable or timeout)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    get:
+      operationId: scrapeWebpageGet
+      summary: Scrape Webpage (GET)
+      description: Simple GET version of the scrape endpoint using query parameters.
+      tags:
+      - Scrape
+      parameters:
+      - name: url
+        in: query
+        required: true
+        schema:
+          type: string
+          format: uri
+        description: URL to scrape
+      - name: type
+        in: query
+        schema:
+          type: string
+          enum:
+          - text
+          - html
+          - links
+          default: text
+      - name: pages
+        in: query
+        schema:
+          type: integer
+          default: 1
+      - name: wait_ms
+        in: query
+        schema:
+          type: integer
+          default: 0
+      - name: block_resources
+        in: query
+        schema:
+          type: string
+          enum:
+          - 'true'
+          - 'false'
+      - name: locale
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Content scraped
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScrapeResponse'
+        '400':
+          description: Validation error
+        '401':
+          description: Invalid API key
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+    ScrapeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              page:
+                type: integer
+              url:
+                type: string
+              data:
+                type: string
+                description: Scraped content (string or JSON string for links/metadata)
+    ScrapeRequest:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+          format: uri
+          description: URL to scrape
+        type:
+          type: string
+          enum:
+          - text
+          - html
+          - links
+          - markdown
+          - metadata
+          default: text
+          description: Output format
+        pages:
+          type: integer
+          minimum: 1
+          maximum: 10
+          default: 1
+          description: Number of paginated pages to scrape
+        waitMs:
+          type: integer
+          minimum: 0
+          maximum: 30000
+          default: 0
+          description: Wait time in ms after page load
+        proxy:
+          type: string
+          description: Custom proxy URL (http://user:pass@host:port)
+        premiumProxy:
+          type: boolean
+          description: Use managed residential proxy pool
+        blockResources:
+          type: boolean
+          default: false
+          description: Block images, media, and fonts
+        locale:
+          type: string
+          maxLength: 20
+          description: Browser locale (e.g. en-US)
+  headers:
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Your SnapAPI API key
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT access token obtained from /auth/login or /auth/refresh
