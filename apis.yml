@@ -10,7 +10,18 @@ description: SnapAPI is a REST API for turning any URL into visual captures or s
   device emulation, ad/cookie-banner blocking, caching, and optional cloud storage,
   all powered by headless Chromium. Free tier of 200 requests/month, no credit card
   required, with X-Api-Key authentication and eight official SDKs.
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: unknown
+  onboarding: open
+  trial: false
+  try_now: false
+  public: true
+  label: Open access
+  confidence: medium
+  source: []
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/snapapi-pics.png
 tags:
 - Screenshots
 - PDF
@@ -30,140 +41,162 @@ created: '2026-07-16'
 modified: '2026-07-16'
 specificationVersion: '0.21'
 apis:
-- aid: snapapi-pics:snapapi-screenshot-api
-  name: SnapAPI Screenshot API
-  tags:
-  - Screenshots
-  - PNG
-  - JPEG
-  - WebP
-  - AVIF
-  - Batch
-  - Async
-  - Web Capture
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+- aid: snapapi-pics:snapapi-pics-analyze-api
+  name: SnapAPI Analyze API
+  description: AI-powered web analysis with your own LLM key (BYOK)
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
+  tags:
+  - Analyze
   properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Capture pixel-perfect screenshots of any web page via POST or GET /v1/screenshot
-    in PNG, JPEG, WebP, or AVIF, with full-page capture, device emulation, dark mode,
-    ad/tracker/cookie-banner blocking, and custom CSS/JS injection. Process up to 100
-    URLs at once with POST /v1/screenshot/batch, and poll batch or async jobs by jobId.
-- aid: snapapi-pics:snapapi-pdf-api
+  - type: OpenAPI
+    url: openapi/snapapi-pics-analyze-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-auth-api
+  name: SnapAPI Auth API
+  description: Authentication — register, login, OAuth, password reset, email verification
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Auth
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-auth-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-dashboard-api
+  name: SnapAPI Dashboard API
+  description: User dashboard — quota overview, API key management, billing, usage history
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Dashboard
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-dashboard-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-extract-api
+  name: SnapAPI Extract API
+  description: Web content extraction (HTML, text, markdown, article, structured)
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Extract
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-extract-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-health-api
+  name: SnapAPI Health API
+  description: Health check and monitoring
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Health
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-health-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-pdf-api
   name: SnapAPI PDF API
+  description: PDF generation from URLs and HTML
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
   tags:
   - PDF
-  - HTML to PDF
-  - Document Generation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://snapapi.pics/docs.html
-  baseURL: https://api.snapapi.pics
   properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Generate full-page PDFs from a URL or raw HTML with POST /v1/pdf, rendered
-    through headless Chromium with the same page-preparation controls as the screenshot
-    surface.
-- aid: snapapi-pics:snapapi-video-api
-  name: SnapAPI Video API
-  tags:
-  - Video
-  - MP4
-  - WebM
-  - GIF
-  - Scroll Animation
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://snapapi.pics/docs.html
-  baseURL: https://api.snapapi.pics
-  properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Record a web page as video with POST /v1/video, producing WebM, MP4,
-    or GIF output including optional scroll animation of the full page.
-- aid: snapapi-pics:snapapi-extract-api
-  name: SnapAPI Content Extraction API
-  tags:
-  - Content Extraction
-  - Markdown
-  - Text
-  - Metadata
-  - AI
-  - Data Extraction
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
-  humanURL: https://snapapi.pics/docs.html
-  baseURL: https://api.snapapi.pics
-  properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Extract HTML, plain text, markdown, article content, links, images,
-    or metadata from any page via POST or GET /v1/extract, with markdown output tuned
-    for LLM and AI-pipeline consumption.
-- aid: snapapi-pics:snapapi-scrape-api
+  - type: OpenAPI
+    url: openapi/snapapi-pics-pdf-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-scrape-api
   name: SnapAPI Scrape API
-  tags:
-  - Web Scraping
-  - Anti-Bot
-  - Stealth
-  - Proxies
-  - Pagination
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  description: Web scraping — extract text, HTML, links, markdown, or metadata from any URL
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
-  properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Scrape single or multiple pages with POST or GET /v1/scrape, including
-    pagination handling, anti-bot stealth, and proxy support for reliably collecting
-    data from protected sites.
-- aid: snapapi-pics:snapapi-analyze-api
-  name: SnapAPI AI Analyze API
   tags:
-  - AI
-  - LLM
-  - BYOK
-  - Page Analysis
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  - Scrape
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-scrape-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-screenshot-api
+  name: SnapAPI Screenshot API
+  description: Screenshot, PDF, and batch capture
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
+  tags:
+  - Screenshot
   properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Run AI analysis over a rendered web page with POST /v1/analyze using
-    your own OpenAI or Anthropic API key (bring-your-own-key), combining SnapAPI's
-    rendering with an LLM of your choice.
-- aid: snapapi-pics:snapapi-account-api
-  name: SnapAPI Usage & Capabilities API
+  - type: OpenAPI
+    url: openapi/snapapi-pics-screenshot-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-storage-api
+  name: SnapAPI Storage API
+  description: File storage — list, retrieve, delete stored files; configure custom S3
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Storage
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-storage-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-usage-api
+  name: SnapAPI Usage API
+  description: API usage and quota management
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
   tags:
   - Usage
-  - Quota
-  - Capabilities
-  - Devices
-  - Account
-  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-usage-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-utilities-api
+  name: SnapAPI Utilities API
+  description: Device presets and API capabilities
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
+  tags:
+  - Utilities
   properties:
-  - url: https://snapapi.pics/docs.html
-    type: Documentation
-  - url: openapi/snapapi-pics-openapi.json
-    type: OpenAPI
-  description: Check quota and consumption with GET /v1/usage, list device presets
-    for emulation with GET /v1/devices, and discover supported formats and feature
-    limits with GET /v1/capabilities.
+  - type: OpenAPI
+    url: openapi/snapapi-pics-utilities-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-video-api
+  name: SnapAPI Video API
+  description: Video recording of webpages
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Video
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-video-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
+- aid: snapapi-pics:snapapi-pics-webhooks-api
+  name: SnapAPI Webhooks API
+  description: Paddle billing webhooks (server-to-server)
+  humanURL: https://snapapi.pics/docs.html
+  baseURL: https://api.snapapi.pics
+  tags:
+  - Webhooks
+  properties:
+  - type: OpenAPI
+    url: openapi/snapapi-pics-webhooks-api-openapi.yml
+  - type: Documentation
+    url: https://snapapi.pics/docs.html
 common:
 - type: Website
   url: https://snapapi.pics
