@@ -1,0 +1,38 @@
+{
+  "provider": "snapapi-pics",
+  "sources": [
+    "snapapi-pics-analyze-api-openapi.yml",
+    "snapapi-pics-auth-api-openapi.yml",
+    "snapapi-pics-dashboard-api-openapi.yml",
+    "snapapi-pics-extract-api-openapi.yml",
+    "snapapi-pics-health-api-openapi.yml",
+    "snapapi-pics-pdf-api-openapi.yml",
+    "snapapi-pics-scrape-api-openapi.yml",
+    "snapapi-pics-screenshot-api-openapi.yml",
+    "snapapi-pics-storage-api-openapi.yml",
+    "snapapi-pics-usage-api-openapi.yml",
+    "snapapi-pics-utilities-api-openapi.yml",
+    "snapapi-pics-video-api-openapi.yml",
+    "snapapi-pics-webhooks-api-openapi.yml"
+  ],
+  "outputs": [
+    "snapapi-pics-analyze-api-openapi.yml",
+    "snapapi-pics-auth-api-openapi.yml",
+    "snapapi-pics-dashboard-api-openapi.yml",
+    "snapapi-pics-extract-api-openapi.yml",
+    "snapapi-pics-health-api-openapi.yml",
+    "snapapi-pics-pdf-api-openapi.yml",
+    "snapapi-pics-scrape-api-openapi.yml",
+    "snapapi-pics-screenshot-api-openapi.yml",
+    "snapapi-pics-storage-api-openapi.yml",
+    "snapapi-pics-usage-api-openapi.yml",
+    "snapapi-pics-utilities-api-openapi.yml",
+    "snapapi-pics-video-api-openapi.yml",
+    "snapapi-pics-webhooks-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
