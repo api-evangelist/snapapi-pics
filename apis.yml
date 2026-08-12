@@ -205,7 +205,7 @@ common:
 - type: APIReference
   url: https://api.snapapi.pics/v1/docs
 - type: OpenAPI
-  url: openapi/snapapi-pics-openapi.json
+  url: openapi/_original/snapapi-pics-openapi.json
 - type: Signup
   url: https://snapapi.pics/register.html
 - type: Pricing
