@@ -39,7 +39,7 @@ tags:
 - Developer Tools
 created: '2026-07-16'
 modified: '2026-07-16'
-specificationVersion: '0.21'
+specificationVersion: '0.23'
 apis:
 - aid: snapapi-pics:snapapi-pics-analyze-api
   name: SnapAPI Analyze API
