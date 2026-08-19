@@ -1,0 +1,48 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Utilities API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Utilities",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Device Presets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/devices"
+          },
+          "docs": "Get all available device presets (desktop, mobile, tablet) for screenshot emulation."
+        },
+        {
+          "info": {
+            "name": "API Capabilities",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/capabilities"
+          },
+          "docs": "Get supported formats, features, and limits."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

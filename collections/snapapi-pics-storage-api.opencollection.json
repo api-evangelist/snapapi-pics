@@ -1,0 +1,217 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Storage API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Storage",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Storage Overview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/storage/overview",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns vault usage, S3 configuration status, and plan-based storage limits."
+        },
+        {
+          "info": {
+            "name": "Set Vault Preference",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/storage/vault-preference",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Enable or disable SnapAPI cloud storage (Vault). Requires a paid plan."
+        },
+        {
+          "info": {
+            "name": "List Stored Files",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/storage/files",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by storage type"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated list of stored screenshots with signed download URLs."
+        },
+        {
+          "info": {
+            "name": "Get Stored File",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/storage/files/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "thumb",
+                "value": "",
+                "type": "query",
+                "description": "Return thumbnail instead of full file"
+              },
+              {
+                "name": "token",
+                "value": "",
+                "type": "query",
+                "description": "JWT token as alternative to Authorization header (for <img> tags)"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Serve a stored file directly (local storage) or redirect to a signed S3 URL. Supports JWT auth via `token` query parameter for use in `<img>` tags."
+        },
+        {
+          "info": {
+            "name": "Delete Stored File",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.snapapi.pics/storage/files/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Permanently delete a stored file."
+        },
+        {
+          "info": {
+            "name": "Get S3 Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/storage/user-s3",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the user's custom S3 configuration (access key ID masked)."
+        },
+        {
+          "info": {
+            "name": "Save S3 Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/storage/user-s3",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Save custom S3 credentials for storing screenshots in your own bucket."
+        },
+        {
+          "info": {
+            "name": "Delete S3 Configuration",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.snapapi.pics/storage/user-s3",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Remove the custom S3 configuration."
+        },
+        {
+          "info": {
+            "name": "Test S3 Connection",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/storage/user-s3/test",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Test connectivity to the configured S3 bucket by attempting a put/get/delete operation."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

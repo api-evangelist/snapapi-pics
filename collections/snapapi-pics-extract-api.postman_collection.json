@@ -1,0 +1,454 @@
+{
+  "item": [
+    {
+      "id": "6aa7318b-378a-4455-8a78-159ed34f304b",
+      "name": "Extract",
+      "description": {
+        "content": "Web content extraction (HTML, text, markdown, article, structured)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "2dd61ecf-9a59-442d-b666-a99a9f509928",
+          "name": "Extract Web Content",
+          "request": {
+            "name": "Extract Web Content",
+            "description": {
+              "content": "Extract content from any webpage as HTML, text, markdown, article, links, images, metadata, or structured data. Optimized for LLM consumption.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "extract"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"type\": \"markdown\",\n  \"selector\": \"<string>\",\n  \"waitFor\": \"<string>\",\n  \"timeout\": 30000,\n  \"darkMode\": false,\n  \"blockAds\": false,\n  \"blockCookieBanners\": false,\n  \"includeImages\": true,\n  \"maxLength\": \"<integer>\",\n  \"cleanOutput\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "360fd231-1013-49b6-9368-d1931db78c15",
+              "name": "Content extracted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"markdown\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique request identifier for debugging",
+                  "key": "X-Request-Id",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"type\": \"string\",\n  \"url\": \"string\",\n  \"data\": {},\n  \"responseTime\": 2617\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cc5e7a50-ee65-4a23-917e-601f95d76b20",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"markdown\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "f589e92b-f730-4f09-930b-c1b4ff6268bd",
+              "name": "Invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"markdown\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "81949ec3-77c2-4006-93cb-cf45b90556b4",
+          "name": "Extract Web Content (GET)",
+          "request": {
+            "name": "Extract Web Content (GET)",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "extract"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "markdown"
+                },
+                {
+                  "disabled": false,
+                  "key": "selector",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "max_length",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "clean",
+                  "value": "true"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_ads",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_cookies",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "164e961f-0286-4f61-b88d-4e4f8f889a0e",
+              "name": "Content extracted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "markdown"
+                    },
+                    {
+                      "key": "selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_length",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "clean",
+                      "value": "true"
+                    },
+                    {
+                      "key": "block_ads",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_cookies",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "ac0f682d-242c-40b2-9663-747232caa54c",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "markdown"
+                    },
+                    {
+                      "key": "selector",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "max_length",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "clean",
+                      "value": "true"
+                    },
+                    {
+                      "key": "block_ads",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_cookies",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.snapapi.pics",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "e482aea3-7bec-4833-a9a7-b2d82a51c439",
+    "name": "SnapAPI - Screenshot & Web Data Analyze Extract API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.\n\n## Authentication\n\nAll API endpoints (except Auth and Health) require one of:\n- `X-Api-Key: sk_live_xxx` header (recommended for server-side)\n- `Authorization: Bearer sk_live_xxx` header\n- `?access_key=sk_live_xxx` query parameter (for GET endpoints)\n\nDashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.\n\n## Rate Limits\n\n| Plan | Requests/month | Rate |\n|------|---------------|------|\n| Free | 100 | 10/min |\n| Starter | 5,000 | 60/min |\n| Pro | 50,000 | 300/min |\n\nRate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`\n\nContact Support:\n Email: support@snapapi.pics",
+      "type": "text/plain"
+    }
+  }
+}

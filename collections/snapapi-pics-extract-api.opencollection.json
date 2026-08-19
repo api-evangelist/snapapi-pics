@@ -1,0 +1,89 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Extract API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extract",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Extract Web Content (GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/extract",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "selector",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "max_length",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "clean",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "block_ads",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "block_cookies",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Extract Web Content (GET)"
+        },
+        {
+          "info": {
+            "name": "Extract Web Content",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/v1/extract",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Extract content from any webpage as HTML, text, markdown, article, links, images, metadata, or structured data. Optimized for LLM consumption."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

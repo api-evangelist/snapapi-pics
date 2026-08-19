@@ -1,0 +1,631 @@
+{
+  "item": [
+    {
+      "id": "c3af9ff0-5d97-4c68-b7b9-4ac037d7bddb",
+      "name": "Scrape",
+      "description": {
+        "content": "Web scraping — extract text, HTML, links, markdown, or metadata from any URL",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "58c48ee6-5918-4458-8101-ba0fbe34711a",
+          "name": "Scrape Webpage",
+          "request": {
+            "name": "Scrape Webpage",
+            "description": {
+              "content": "Scrape content from any URL. Returns text, HTML, markdown, links, or metadata. Supports pagination for multi-page crawls, custom proxies, and resource blocking.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "scrape"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"type\": \"text\",\n  \"pages\": 1,\n  \"waitMs\": 0,\n  \"proxy\": \"<string>\",\n  \"premiumProxy\": \"<boolean>\",\n  \"blockResources\": false,\n  \"locale\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f4c59146-7320-47b6-a946-1ac875aff304",
+              "name": "Content scraped successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"text\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique request identifier for debugging",
+                  "key": "X-Request-Id",
+                  "value": "string"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"results\": [\n    {\n      \"page\": 3374,\n      \"url\": \"string\",\n      \"data\": \"string\"\n    },\n    {\n      \"page\": 9818,\n      \"url\": \"string\",\n      \"data\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "39d55580-ea21-456a-bfcc-086bff3cc279",
+              "name": "Validation error or invalid URL",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"text\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 8758,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aafe2e23-fa60-404d-9474-edc2550f4a74",
+              "name": "Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"text\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 8758,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7d4bbff3-72a1-4693-8be2-b29cdf2cf005",
+              "name": "Rate limit or quota exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"text\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 8758,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c4f52bdb-858f-44da-92e9-776d5bfc20b5",
+              "name": "Scrape failed (site unreachable or timeout)",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"type\": \"text\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 8758,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "46b52282-ff05-46b3-9af9-53cb5105198d",
+          "name": "Scrape Webpage (GET)",
+          "request": {
+            "name": "Scrape Webpage (GET)",
+            "description": {
+              "content": "Simple GET version of the scrape endpoint using query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "scrape"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "(Required) URL to scrape"
+                },
+                {
+                  "disabled": false,
+                  "key": "type",
+                  "value": "text"
+                },
+                {
+                  "disabled": false,
+                  "key": "pages",
+                  "value": "1"
+                },
+                {
+                  "disabled": false,
+                  "key": "wait_ms",
+                  "value": "0"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_resources",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "locale",
+                  "value": "<string>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "a89f9101-0611-4afa-aab5-a9e18f5b55a7",
+              "name": "Content scraped",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "text"
+                    },
+                    {
+                      "key": "pages",
+                      "value": "1"
+                    },
+                    {
+                      "key": "wait_ms",
+                      "value": "0"
+                    },
+                    {
+                      "key": "block_resources",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"results\": [\n    {\n      \"page\": 3374,\n      \"url\": \"string\",\n      \"data\": \"string\"\n    },\n    {\n      \"page\": 9818,\n      \"url\": \"string\",\n      \"data\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "8141783b-0f3d-4861-b63f-c279bb3d6e93",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "text"
+                    },
+                    {
+                      "key": "pages",
+                      "value": "1"
+                    },
+                    {
+                      "key": "wait_ms",
+                      "value": "0"
+                    },
+                    {
+                      "key": "block_resources",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e0819522-89ce-4864-bf13-4f9cc751e2d4",
+              "name": "Invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "scrape"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "type",
+                      "value": "text"
+                    },
+                    {
+                      "key": "pages",
+                      "value": "1"
+                    },
+                    {
+                      "key": "wait_ms",
+                      "value": "0"
+                    },
+                    {
+                      "key": "block_resources",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "locale",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.snapapi.pics",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "0b738a80-577c-44f3-831b-b9ffb97504ae",
+    "name": "SnapAPI - Screenshot & Web Data Analyze Scrape API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.\n\n## Authentication\n\nAll API endpoints (except Auth and Health) require one of:\n- `X-Api-Key: sk_live_xxx` header (recommended for server-side)\n- `Authorization: Bearer sk_live_xxx` header\n- `?access_key=sk_live_xxx` query parameter (for GET endpoints)\n\nDashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.\n\n## Rate Limits\n\n| Plan | Requests/month | Rate |\n|------|---------------|------|\n| Free | 100 | 10/min |\n| Starter | 5,000 | 60/min |\n| Pro | 50,000 | 300/min |\n\nRate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`\n\nContact Support:\n Email: support@snapapi.pics",
+      "type": "text/plain"
+    }
+  }
+}

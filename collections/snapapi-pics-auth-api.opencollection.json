@@ -1,0 +1,187 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Auth API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Auth",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Register",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/register",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a new account with email and password. A verification email is sent automatically. Rate limited to 3 requests/minute per IP."
+        },
+        {
+          "info": {
+            "name": "Login",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/login",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Authenticate with email and password. Returns a JWT access token and sets a HttpOnly refresh token cookie. Rate limited to 5 requests/minute per IP."
+        },
+        {
+          "info": {
+            "name": "Google OAuth",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/google",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sign in or register using a Google ID token obtained from Google Sign-In."
+        },
+        {
+          "info": {
+            "name": "GitHub OAuth",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/github",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sign in or register using a GitHub OAuth authorization code."
+        },
+        {
+          "info": {
+            "name": "Apple Sign-In",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/apple",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Sign in or register using an Apple ID token."
+        },
+        {
+          "info": {
+            "name": "Refresh Token",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/refresh"
+          },
+          "docs": "Exchange the `refresh_token` HttpOnly cookie for a new access token. Rotates the refresh token on each use."
+        },
+        {
+          "info": {
+            "name": "Logout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/logout"
+          },
+          "docs": "Invalidate the current session and clear the refresh token cookie."
+        },
+        {
+          "info": {
+            "name": "Get Current User",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/auth/me",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Get the authenticated user's profile. Requires `Authorization: Bearer <token>` header."
+        },
+        {
+          "info": {
+            "name": "Forgot Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/forgot-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Send a password reset email. Always returns success to prevent email enumeration. Rate limited to 3 requests/hour per IP."
+        },
+        {
+          "info": {
+            "name": "Reset Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/auth/reset-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Set a new password using a valid reset token (obtained from the password reset email)."
+        },
+        {
+          "info": {
+            "name": "Verify Email",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/auth/verify-email",
+            "params": [
+              {
+                "name": "token",
+                "value": "",
+                "type": "query",
+                "description": "Email verification token"
+              }
+            ]
+          },
+          "docs": "Verify email address using the token sent by registration email. Redirects to the dashboard on success."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

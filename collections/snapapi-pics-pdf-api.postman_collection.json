@@ -1,0 +1,246 @@
+{
+  "item": [
+    {
+      "id": "59195c22-6739-4623-9b53-f54b672eb811",
+      "name": "PDF",
+      "description": {
+        "content": "PDF generation from URLs and HTML",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "41084540-84a0-467d-a81f-00f64fa4cd33",
+          "name": "Generate PDF",
+          "request": {
+            "name": "Generate PDF",
+            "description": {
+              "content": "Generate a PDF from any URL or HTML. Supports page sizes, margins, headers/footers, and scaling.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "pdf"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/pdf"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"html\": \"<string>\",\n  \"markdown\": \"<string>\",\n  \"format\": \"png\",\n  \"quality\": 80,\n  \"device\": \"<string>\",\n  \"width\": 1280,\n  \"height\": 800,\n  \"deviceScaleFactor\": 1,\n  \"isMobile\": false,\n  \"hasTouch\": false,\n  \"isLandscape\": false,\n  \"fullPage\": false,\n  \"fullPageScrollDelay\": 400,\n  \"fullPageMaxHeight\": \"<integer>\",\n  \"selector\": \"<string>\",\n  \"clipX\": \"<integer>\",\n  \"clipY\": \"<integer>\",\n  \"clipWidth\": \"<integer>\",\n  \"clipHeight\": \"<integer>\",\n  \"delay\": 0,\n  \"timeout\": 30000,\n  \"waitUntil\": \"load\",\n  \"waitForSelector\": \"<string>\",\n  \"darkMode\": false,\n  \"reducedMotion\": false,\n  \"css\": \"<string>\",\n  \"javascript\": \"<string>\",\n  \"hideSelectors\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"clickSelector\": \"<string>\",\n  \"clickDelay\": \"<integer>\",\n  \"blockAds\": false,\n  \"blockTrackers\": false,\n  \"blockCookieBanners\": false,\n  \"blockChatWidgets\": false,\n  \"blockResources\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"userAgent\": \"<string>\",\n  \"extraHeaders\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"cookies\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"path\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"path\": \"<string>\"\n    }\n  ],\n  \"httpAuth\": {\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"proxy\": {\n    \"server\": \"<uri>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"geolocation\": {\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"accuracy\": \"<number>\"\n  },\n  \"timezone\": \"<string>\",\n  \"locale\": \"<string>\",\n  \"pdfOptions\": {\n    \"pageSize\": \"<string>\",\n    \"landscape\": \"<boolean>\",\n    \"printBackground\": \"<boolean>\",\n    \"scale\": \"<number>\",\n    \"marginTop\": \"<string>\",\n    \"marginBottom\": \"<string>\",\n    \"marginLeft\": \"<string>\",\n    \"marginRight\": \"<string>\",\n    \"headerTemplate\": \"<string>\",\n    \"footerTemplate\": \"<string>\",\n    \"displayHeaderFooter\": \"<boolean>\",\n    \"pageRanges\": \"<string>\"\n  },\n  \"thumbnail\": {\n    \"enabled\": \"<boolean>\",\n    \"width\": \"<integer>\",\n    \"height\": \"<integer>\",\n    \"fit\": \"<string>\"\n  },\n  \"failOnHttpError\": false,\n  \"failIfContentMissing\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"failIfContentContains\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"cache\": false,\n  \"cacheTtl\": 86400,\n  \"responseType\": \"binary\",\n  \"includeMetadata\": false,\n  \"extractMetadata\": {\n    \"fonts\": \"<boolean>\",\n    \"colors\": \"<boolean>\",\n    \"links\": \"<boolean>\",\n    \"httpStatusCode\": \"<boolean>\"\n  },\n  \"storage\": {\n    \"enabled\": \"<boolean>\",\n    \"destination\": \"<string>\"\n  },\n  \"async\": false,\n  \"webhookUrl\": \"<uri>\",\n  \"webhookHeaders\": {\n    \"key_0\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ddd7fd19-0e4d-4ce7-9515-5fb8937d461f",
+              "name": "PDF generated",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/pdf"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"pdfOptions\": {\n    \"pageSize\": \"a4\",\n    \"landscape\": false,\n    \"printBackground\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/pdf"
+                }
+              ],
+              "body": "string",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "468b412a-ace7-4bf7-aa55-38817663490b",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"pdfOptions\": {\n    \"pageSize\": \"a4\",\n    \"landscape\": false,\n    \"printBackground\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "e93a5bc7-27f1-4ce2-8cf8-44cb20f71fc7",
+              "name": "Invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "pdf"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"pdfOptions\": {\n    \"pageSize\": \"a4\",\n    \"landscape\": false,\n    \"printBackground\": true\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.snapapi.pics",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d66ed49e-6aa0-4e2d-b1b4-388e021ac04c",
+    "name": "SnapAPI - Screenshot & Web Data Analyze PDF API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.\n\n## Authentication\n\nAll API endpoints (except Auth and Health) require one of:\n- `X-Api-Key: sk_live_xxx` header (recommended for server-side)\n- `Authorization: Bearer sk_live_xxx` header\n- `?access_key=sk_live_xxx` query parameter (for GET endpoints)\n\nDashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.\n\n## Rate Limits\n\n| Plan | Requests/month | Rate |\n|------|---------------|------|\n| Free | 100 | 10/min |\n| Starter | 5,000 | 60/min |\n| Pro | 50,000 | 300/min |\n\nRate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`\n\nContact Support:\n Email: support@snapapi.pics",
+      "type": "text/plain"
+    }
+  }
+}

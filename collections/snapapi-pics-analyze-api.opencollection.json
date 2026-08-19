@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Analyze",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "AI-Powered Web Analysis",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/v1/analyze",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Analyze any webpage using your own LLM API key (BYOK). Supports OpenAI and Anthropic. Optionally get structured JSON output via jsonSchema. Perfect for competitive intelligence, compliance audits, and data extraction."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

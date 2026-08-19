@@ -1,0 +1,85 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Scrape API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Scrape",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Scrape Webpage (GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/scrape",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query",
+                "description": "URL to scrape"
+              },
+              {
+                "name": "type",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "pages",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "wait_ms",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "block_resources",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "locale",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Simple GET version of the scrape endpoint using query parameters."
+        },
+        {
+          "info": {
+            "name": "Scrape Webpage",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/v1/scrape",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Scrape content from any URL. Returns text, HTML, markdown, links, or metadata. Supports pagination for multi-page crawls, custom proxies, and resource blocking."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

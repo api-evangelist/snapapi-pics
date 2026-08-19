@@ -1,0 +1,166 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - & Web Data Analyze Screenshot API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Screenshot",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Take Screenshot (GET)",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/screenshot",
+            "params": [
+              {
+                "name": "url",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "format",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "quality",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "width",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "height",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "full_page",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "dark_mode",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "block_ads",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "block_cookie_banners",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "cache",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "response_type",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "Simple GET endpoint for screenshots via query parameters."
+        },
+        {
+          "info": {
+            "name": "Take Screenshot",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/v1/screenshot",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Capture a screenshot of any URL, HTML, or Markdown. Supports full-page, device emulation, dark mode, ad blocking, custom CSS/JS, caching, async processing, webhooks, and cloud storage."
+        },
+        {
+          "info": {
+            "name": "Batch Screenshots",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/v1/screenshot/batch",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Submit up to 100 URLs for batch processing. Returns a job ID to poll for results."
+        },
+        {
+          "info": {
+            "name": "Get Batch Job Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/screenshot/batch/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get Batch Job Status"
+        },
+        {
+          "info": {
+            "name": "Get Async Screenshot Status",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/v1/screenshot/async/:jobId",
+            "params": [
+              {
+                "name": "jobId",
+                "value": "",
+                "type": "path"
+              },
+              {
+                "name": "includeData",
+                "value": "",
+                "type": "query",
+                "description": "Include base64 data in response"
+              }
+            ]
+          },
+          "docs": "Get Async Screenshot Status"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

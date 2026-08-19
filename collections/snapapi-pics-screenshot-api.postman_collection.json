@@ -1,0 +1,1219 @@
+{
+  "item": [
+    {
+      "id": "3fc1cfbc-f94c-4963-a24b-a92220f0ecbe",
+      "name": "Screenshot",
+      "description": {
+        "content": "Screenshot, PDF, and batch capture",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "043015ef-5823-416e-8667-ca1a980d16fd",
+          "name": "Take Screenshot",
+          "request": {
+            "name": "Take Screenshot",
+            "description": {
+              "content": "Capture a screenshot of any URL, HTML, or Markdown. Supports full-page, device emulation, dark mode, ad blocking, custom CSS/JS, caching, async processing, webhooks, and cloud storage.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "screenshot"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "image/png"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"html\": \"<string>\",\n  \"markdown\": \"<string>\",\n  \"format\": \"png\",\n  \"quality\": 80,\n  \"device\": \"<string>\",\n  \"width\": 1280,\n  \"height\": 800,\n  \"deviceScaleFactor\": 1,\n  \"isMobile\": false,\n  \"hasTouch\": false,\n  \"isLandscape\": false,\n  \"fullPage\": false,\n  \"fullPageScrollDelay\": 400,\n  \"fullPageMaxHeight\": \"<integer>\",\n  \"selector\": \"<string>\",\n  \"clipX\": \"<integer>\",\n  \"clipY\": \"<integer>\",\n  \"clipWidth\": \"<integer>\",\n  \"clipHeight\": \"<integer>\",\n  \"delay\": 0,\n  \"timeout\": 30000,\n  \"waitUntil\": \"load\",\n  \"waitForSelector\": \"<string>\",\n  \"darkMode\": false,\n  \"reducedMotion\": false,\n  \"css\": \"<string>\",\n  \"javascript\": \"<string>\",\n  \"hideSelectors\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"clickSelector\": \"<string>\",\n  \"clickDelay\": \"<integer>\",\n  \"blockAds\": false,\n  \"blockTrackers\": false,\n  \"blockCookieBanners\": false,\n  \"blockChatWidgets\": false,\n  \"blockResources\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"userAgent\": \"<string>\",\n  \"extraHeaders\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\"\n  },\n  \"cookies\": [\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"path\": \"<string>\"\n    },\n    {\n      \"name\": \"<string>\",\n      \"value\": \"<string>\",\n      \"domain\": \"<string>\",\n      \"path\": \"<string>\"\n    }\n  ],\n  \"httpAuth\": {\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"proxy\": {\n    \"server\": \"<uri>\",\n    \"username\": \"<string>\",\n    \"password\": \"<string>\"\n  },\n  \"geolocation\": {\n    \"latitude\": \"<number>\",\n    \"longitude\": \"<number>\",\n    \"accuracy\": \"<number>\"\n  },\n  \"timezone\": \"<string>\",\n  \"locale\": \"<string>\",\n  \"pdfOptions\": {\n    \"pageSize\": \"<string>\",\n    \"landscape\": \"<boolean>\",\n    \"printBackground\": \"<boolean>\",\n    \"scale\": \"<number>\",\n    \"marginTop\": \"<string>\",\n    \"marginBottom\": \"<string>\",\n    \"marginLeft\": \"<string>\",\n    \"marginRight\": \"<string>\",\n    \"headerTemplate\": \"<string>\",\n    \"footerTemplate\": \"<string>\",\n    \"displayHeaderFooter\": \"<boolean>\",\n    \"pageRanges\": \"<string>\"\n  },\n  \"thumbnail\": {\n    \"enabled\": \"<boolean>\",\n    \"width\": \"<integer>\",\n    \"height\": \"<integer>\",\n    \"fit\": \"<string>\"\n  },\n  \"failOnHttpError\": false,\n  \"failIfContentMissing\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"failIfContentContains\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"cache\": false,\n  \"cacheTtl\": 86400,\n  \"responseType\": \"binary\",\n  \"includeMetadata\": false,\n  \"extractMetadata\": {\n    \"fonts\": \"<boolean>\",\n    \"colors\": \"<boolean>\",\n    \"links\": \"<boolean>\",\n    \"httpStatusCode\": \"<boolean>\"\n  },\n  \"storage\": {\n    \"enabled\": \"<boolean>\",\n    \"destination\": \"<string>\"\n  },\n  \"async\": false,\n  \"webhookUrl\": \"<uri>\",\n  \"webhookHeaders\": {\n    \"key_0\": \"<string>\",\n    \"key_1\": \"<string>\",\n    \"key_2\": \"<string>\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "688c7379-7719-44d0-b63a-80b43423ba72",
+              "name": "Screenshot captured successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "image/png"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"format\": \"png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "disabled": false,
+                  "description": "Unique request identifier for debugging",
+                  "key": "X-Request-Id",
+                  "value": "string"
+                },
+                {
+                  "disabled": false,
+                  "description": "Max requests per window",
+                  "key": "X-RateLimit-Limit",
+                  "value": "7725"
+                },
+                {
+                  "disabled": false,
+                  "description": "Remaining requests",
+                  "key": "X-RateLimit-Remaining",
+                  "value": "7725"
+                },
+                {
+                  "disabled": false,
+                  "description": "Window reset time (unix ms)",
+                  "key": "X-RateLimit-Reset",
+                  "value": "7725"
+                },
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"cached\": false,\n  \"data\": \"string\",\n  \"format\": \"png\",\n  \"width\": 1280,\n  \"height\": 800,\n  \"fileSize\": 2758,\n  \"took\": 7241,\n  \"metadata\": {},\n  \"storage\": {\n    \"id\": \"string\",\n    \"url\": \"string\"\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "efbe26ba-54bf-4369-bc3b-10bf20256642",
+              "name": "Async job accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"format\": \"png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": true,\n  \"async\": true,\n  \"jobId\": \"string\",\n  \"status\": \"processing\",\n  \"statusUrl\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "86268c26-35a9-476f-abd1-286d04183323",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"format\": \"png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 148,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3aef6446-9cd3-4f40-947d-4d214f539e4f",
+              "name": "Invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"format\": \"png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 148,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7ad867b0-d042-4338-a221-e695a77581b5",
+              "name": "Feature not available on your plan",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"format\": \"png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Forbidden",
+              "code": 403,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 148,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6c3ea4bb-c34d-4454-aa58-6193eaa4aed7",
+              "name": "Rate limit or quota exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"format\": \"png\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"statusCode\": 148,\n  \"error\": \"string\",\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f66b4de1-5458-43fd-a77e-d35ed296910b",
+          "name": "Take Screenshot (GET)",
+          "request": {
+            "name": "Take Screenshot (GET)",
+            "description": {
+              "content": "Simple GET endpoint for screenshots via query parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "screenshot"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "(Required) "
+                },
+                {
+                  "disabled": false,
+                  "key": "format",
+                  "value": "png"
+                },
+                {
+                  "disabled": false,
+                  "key": "quality",
+                  "value": "<integer>"
+                },
+                {
+                  "disabled": false,
+                  "key": "width",
+                  "value": "1280"
+                },
+                {
+                  "disabled": false,
+                  "key": "height",
+                  "value": "800"
+                },
+                {
+                  "disabled": false,
+                  "key": "full_page",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "dark_mode",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_ads",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "block_cookie_banners",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "cache",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "response_type",
+                  "value": "binary"
+                }
+              ],
+              "variable": []
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "58d7eba8-350f-4572-8f9b-3166dc272eb4",
+              "name": "Screenshot captured",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "png"
+                    },
+                    {
+                      "key": "quality",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "width",
+                      "value": "1280"
+                    },
+                    {
+                      "key": "height",
+                      "value": "800"
+                    },
+                    {
+                      "key": "full_page",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dark_mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_ads",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_cookie_banners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cache",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_type",
+                      "value": "binary"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "63679500-6641-41f0-b3dc-5586dacc7377",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "png"
+                    },
+                    {
+                      "key": "quality",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "width",
+                      "value": "1280"
+                    },
+                    {
+                      "key": "height",
+                      "value": "800"
+                    },
+                    {
+                      "key": "full_page",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dark_mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_ads",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_cookie_banners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cache",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_type",
+                      "value": "binary"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "0277fa3d-94f8-435b-916d-69225173ab63",
+              "name": "Invalid API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "format",
+                      "value": "png"
+                    },
+                    {
+                      "key": "quality",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "width",
+                      "value": "1280"
+                    },
+                    {
+                      "key": "height",
+                      "value": "800"
+                    },
+                    {
+                      "key": "full_page",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "dark_mode",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_ads",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "block_cookie_banners",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "cache",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "response_type",
+                      "value": "binary"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "f691a50b-ecdc-4d3f-9dfc-a9fd26e32533",
+          "name": "Batch Screenshots",
+          "request": {
+            "name": "Batch Screenshots",
+            "description": {
+              "content": "Submit up to 100 URLs for batch processing. Returns a job ID to poll for results.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "screenshot",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"urls\": [\n    \"<uri>\"\n  ],\n  \"format\": \"png\",\n  \"quality\": 80,\n  \"width\": 1280,\n  \"height\": 800,\n  \"fullPage\": false,\n  \"darkMode\": false,\n  \"blockAds\": false,\n  \"blockCookieBanners\": false,\n  \"webhookUrl\": \"<uri>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e08780b5-65aa-456f-9c2e-e6e093e3167e",
+              "name": "Batch job accepted",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://google.com\"\n  ],\n  \"format\": \"png\",\n  \"width\": 1280\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"jobId\": \"string\",\n  \"status\": \"string\",\n  \"total\": 2928,\n  \"message\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5d924a5b-c91e-410b-8d53-30157abef8ac",
+              "name": "Quota exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"urls\": [\n    \"https://example.com\",\n    \"https://google.com\"\n  ],\n  \"format\": \"png\",\n  \"width\": 1280\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "936bdbb8-5b07-4afc-8cff-41929044cac5",
+          "name": "Get Batch Job Status",
+          "request": {
+            "name": "Get Batch Job Status",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "screenshot",
+                "batch",
+                ":jobId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "jobId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "4b76ade5-bb85-432a-b44a-f7edd175357b",
+              "name": "Batch job status with results",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot",
+                    "batch",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "59570f59-74a3-4348-9fac-4529c643ed39",
+              "name": "Job not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot",
+                    "batch",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "67b3d6b7-5d09-48e7-bede-51ec67ac73f3",
+          "name": "Get Async Screenshot Status",
+          "request": {
+            "name": "Get Async Screenshot Status",
+            "description": {},
+            "url": {
+              "path": [
+                "v1",
+                "screenshot",
+                "async",
+                ":jobId"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "includeData",
+                  "value": "<string>",
+                  "description": "Include base64 data in response"
+                }
+              ],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "jobId",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "b0ebbe7d-ff2f-4fcd-911c-dc35c350dfdb",
+              "name": "Async job status",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot",
+                    "async",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeData",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "6b57ae78-43ed-41a0-9f2e-0d86239f9be0",
+              "name": "Job not found or expired",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "screenshot",
+                    "async",
+                    ":jobId"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "includeData",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "jobId",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.snapapi.pics",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "b29cd2cf-8300-49b4-87c7-f4378366bd2c",
+    "name": "SnapAPI - & Web Data Analyze Screenshot API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.\n\n## Authentication\n\nAll API endpoints (except Auth and Health) require one of:\n- `X-Api-Key: sk_live_xxx` header (recommended for server-side)\n- `Authorization: Bearer sk_live_xxx` header\n- `?access_key=sk_live_xxx` query parameter (for GET endpoints)\n\nDashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.\n\n## Rate Limits\n\n| Plan | Requests/month | Rate |\n|------|---------------|------|\n| Free | 100 | 10/min |\n| Starter | 5,000 | 60/min |\n| Pro | 50,000 | 300/min |\n\nRate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`\n\nContact Support:\n Email: support@snapapi.pics",
+      "type": "text/plain"
+    }
+  }
+}

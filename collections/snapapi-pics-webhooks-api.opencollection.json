@@ -1,0 +1,47 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Webhooks API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Webhooks",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Paddle Webhook",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/webhooks/paddle",
+            "headers": [
+              {
+                "name": "Paddle-Signature",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Receives Paddle billing events (subscription created/updated/canceled, payment completed/failed). Validates the `Paddle-Signature` header using HMAC-SHA256. This endpoint is for Paddle servers only — not for direct API consumers."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,280 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "SnapAPI - Screenshot & Web Data Analyze Dashboard API",
+    "version": "2.0.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "x-api-key",
+      "value": "{{x-api-key}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Dashboard",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Dashboard Overview",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/dashboard/overview",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns user profile, quota usage, monthly stats, daily usage chart data, and active subscription."
+        },
+        {
+          "info": {
+            "name": "List API Keys",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/dashboard/api-keys",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all API keys for the authenticated user including full key values."
+        },
+        {
+          "info": {
+            "name": "Create API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/dashboard/api-keys",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Create a new API key. Maximum 10 keys per user. Full key value is only returned once on creation."
+        },
+        {
+          "info": {
+            "name": "Update API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.snapapi.pics/dashboard/api-keys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update an API key's name, active status, or permissions."
+        },
+        {
+          "info": {
+            "name": "Delete API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.snapapi.pics/dashboard/api-keys/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Delete an API key. Cannot delete the last remaining key."
+        },
+        {
+          "info": {
+            "name": "Regenerate API Key",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/dashboard/api-keys/:id/regenerate",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Generate a new key value for an existing key entry. Old key is immediately invalidated."
+        },
+        {
+          "info": {
+            "name": "Usage History",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/dashboard/usage",
+            "params": [
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "apiKeyId",
+                "value": "",
+                "type": "query",
+                "description": "Filter by specific API key"
+              }
+            ],
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Paginated list of API calls with endpoint, options, response time, status code, and error details."
+        },
+        {
+          "info": {
+            "name": "Billing Info",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/dashboard/billing",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns the current subscription and payment history."
+        },
+        {
+          "info": {
+            "name": "Available Plans",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.snapapi.pics/dashboard/plans",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns all available subscription plans with pricing, quotas, and features."
+        },
+        {
+          "info": {
+            "name": "Create Checkout",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/dashboard/create-checkout",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Returns a Paddle price ID and customer email for the frontend to open a Paddle.js checkout overlay."
+        },
+        {
+          "info": {
+            "name": "Cancel Subscription",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/dashboard/cancel-subscription",
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Cancel the active subscription at period end. Access remains until current billing period expires."
+        },
+        {
+          "info": {
+            "name": "Update Profile",
+            "type": "http"
+          },
+          "http": {
+            "method": "PATCH",
+            "url": "https://api.snapapi.pics/dashboard/profile",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Update the authenticated user's display name."
+        },
+        {
+          "info": {
+            "name": "Change Password",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.snapapi.pics/dashboard/change-password",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "bearer",
+              "token": "{{bearerToken}}"
+            }
+          },
+          "docs": "Change password for email/password accounts. Not available for OAuth-only accounts."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

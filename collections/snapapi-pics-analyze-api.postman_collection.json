@@ -1,0 +1,294 @@
+{
+  "item": [
+    {
+      "id": "74dc45b6-08fe-4b1e-a66a-7db3d197bfc6",
+      "name": "Analyze",
+      "description": {
+        "content": "AI-powered web analysis with your own LLM key (BYOK)",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "660e079e-da65-4fce-8100-c2a5965f0600",
+          "name": "AI-Powered Web Analysis",
+          "request": {
+            "name": "AI-Powered Web Analysis",
+            "description": {
+              "content": "Analyze any webpage using your own LLM API key (BYOK). Supports OpenAI and Anthropic. Optionally get structured JSON output via jsonSchema. Perfect for competitive intelligence, compliance audits, and data extraction.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "v1",
+                "analyze"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<uri>\",\n  \"prompt\": \"<string>\",\n  \"apiKey\": \"<string>\",\n  \"provider\": \"openai\",\n  \"model\": \"<string>\",\n  \"jsonSchema\": \"<object>\",\n  \"timeout\": 30000,\n  \"waitFor\": \"<string>\",\n  \"blockAds\": true,\n  \"blockCookieBanners\": true,\n  \"includeScreenshot\": false,\n  \"includeMetadata\": true,\n  \"maxContentLength\": 50000\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "6d6686ee-27af-4928-abca-18cc20578c92",
+              "name": "Analysis complete",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "analyze"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"prompt\": \"Summarize the main content\",\n  \"provider\": \"openai\",\n  \"apiKey\": \"sk-...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"success\": false,\n  \"url\": \"string\",\n  \"metadata\": {\n    \"url\": \"string\",\n    \"title\": \"string\",\n    \"description\": \"string\"\n  },\n  \"analysis\": {},\n  \"provider\": \"string\",\n  \"model\": \"string\",\n  \"responseTime\": 7603\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03bd5f0e-6f22-4763-b8b3-728b57d2815c",
+              "name": "Validation error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "analyze"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"prompt\": \"Summarize the main content\",\n  \"provider\": \"openai\",\n  \"apiKey\": \"sk-...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "88d29b67-f418-4063-8322-b179ff88b67a",
+              "name": "Invalid SnapAPI key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "analyze"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"prompt\": \"Summarize the main content\",\n  \"provider\": \"openai\",\n  \"apiKey\": \"sk-...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4d895046-968e-44e7-89a6-88dbc51f7b29",
+              "name": "LLM provider error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "v1",
+                    "analyze"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"https://example.com\",\n  \"prompt\": \"Summarize the main content\",\n  \"provider\": \"openai\",\n  \"apiKey\": \"sk-...\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Gateway",
+              "code": 502,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.snapapi.pics",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "x-api-key"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "d522727a-1a51-422d-b780-27df99c09f58",
+    "name": "SnapAPI - Screenshot & Web Data Analyze API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.\n\n## Authentication\n\nAll API endpoints (except Auth and Health) require one of:\n- `X-Api-Key: sk_live_xxx` header (recommended for server-side)\n- `Authorization: Bearer sk_live_xxx` header\n- `?access_key=sk_live_xxx` query parameter (for GET endpoints)\n\nDashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.\n\n## Rate Limits\n\n| Plan | Requests/month | Rate |\n|------|---------------|------|\n| Free | 100 | 10/min |\n| Starter | 5,000 | 60/min |\n| Pro | 50,000 | 300/min |\n\nRate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`\n\nContact Support:\n Email: support@snapapi.pics",
+      "type": "text/plain"
+    }
+  }
+}
