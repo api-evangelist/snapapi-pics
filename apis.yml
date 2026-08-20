@@ -33,6 +33,21 @@ tags:
 - Headless Chromium
 - Anti-Bot
 - Proxies
+- Artificial Intelligence
+- Web Capture
+- REST
+- Developer Tools
+tags_raw:
+- Screenshots
+- PDF
+- Video
+- Web Scraping
+- Content Extraction
+- Markdown
+- Metadata
+- Headless Chromium
+- Anti-Bot
+- Proxies
 - AI
 - Web Capture
 - REST
@@ -59,6 +74,8 @@ apis:
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
   tags:
+  - Authentication
+  tags_raw:
   - Auth
   properties:
   - type: OpenAPI
@@ -191,6 +208,8 @@ apis:
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
   tags:
+  - Webhook
+  tags_raw:
   - Webhooks
   properties:
   - type: OpenAPI
