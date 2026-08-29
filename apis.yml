@@ -10,6 +10,18 @@ description: SnapAPI is a REST API for turning any URL into visual captures or s
   device emulation, ad/cookie-banner blocking, caching, and optional cloud storage,
   all powered by headless Chromium. Free tier of 200 requests/month, no credit card
   required, with X-Api-Key authentication and eight official SDKs.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: unknown
   onboarding: open
