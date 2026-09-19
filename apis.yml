@@ -100,6 +100,8 @@ apis:
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
   tags:
+  - Dashboards
+  tags_raw:
   - Dashboard
   properties:
   - type: OpenAPI
@@ -160,6 +162,8 @@ apis:
   humanURL: https://snapapi.pics/docs.html
   baseURL: https://api.snapapi.pics
   tags:
+  - Screenshots
+  tags_raw:
   - Screenshot
   properties:
   - type: OpenAPI
