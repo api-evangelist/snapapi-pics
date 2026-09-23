@@ -1,40 +1,8 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
-  title: SnapAPI - Screenshot & Web Data Analyze Webhooks API
+  title: SnapAPI - Screenshot & Web Data Webhooks API
   version: 2.0.0
-  description: 'Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API. Convert any URL into structured data or visual captures with a single API call. Powered by headless Chromium.
-
-
-    ## Authentication
-
-
-    All API endpoints (except Auth and Health) require one of:
-
-    - `X-Api-Key: sk_live_xxx` header (recommended for server-side)
-
-    - `Authorization: Bearer sk_live_xxx` header
-
-    - `?access_key=sk_live_xxx` query parameter (for GET endpoints)
-
-
-    Dashboard endpoints use JWT Bearer tokens obtained from `/auth/login`.
-
-
-    ## Rate Limits
-
-
-    | Plan | Requests/month | Rate |
-
-    |------|---------------|------|
-
-    | Free | 100 | 10/min |
-
-    | Starter | 5,000 | 60/min |
-
-    | Pro | 50,000 | 300/min |
-
-
-    Rate limit headers: `X-RateLimit-Limit`, `X-RateLimit-Remaining`, `X-RateLimit-Reset`'
+  description: Professional screenshot, PDF, video, scraping, content extraction, and AI analysis API.
   contact:
     email: support@snapapi.pics
     url: https://snapapi.pics
