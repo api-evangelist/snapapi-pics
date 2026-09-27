@@ -342,19 +342,6 @@ paths:
           description: Missing token
 components:
   schemas:
-    AuthResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        user:
-          $ref: '#/components/schemas/UserObject'
-        accessToken:
-          type: string
-          description: JWT access token (15 min expiry). Store in memory only.
-        message:
-          type: string
     UserObject:
       type: object
       properties:
@@ -388,6 +375,19 @@ components:
           type: integer
         error:
           type: string
+        message:
+          type: string
+    AuthResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        user:
+          $ref: '#/components/schemas/UserObject'
+        accessToken:
+          type: string
+          description: JWT access token (15 min expiry). Store in memory only.
         message:
           type: string
   securitySchemes:

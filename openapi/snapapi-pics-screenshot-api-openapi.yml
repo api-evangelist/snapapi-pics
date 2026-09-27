@@ -287,112 +287,6 @@ paths:
           description: Job not found or expired
 components:
   schemas:
-    AsyncJobResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        async:
-          type: boolean
-        jobId:
-          type: string
-        status:
-          type: string
-          enum:
-          - pending
-          - processing
-          - completed
-          - failed
-        statusUrl:
-          type: string
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        message:
-          type: string
-    BatchRequest:
-      type: object
-      required:
-      - urls
-      properties:
-        urls:
-          type: array
-          items:
-            type: string
-            format: uri
-          minItems: 1
-          maxItems: 100
-        format:
-          type: string
-          enum:
-          - png
-          - jpeg
-          - webp
-          - avif
-          - pdf
-          default: png
-        quality:
-          type: integer
-          default: 80
-        width:
-          type: integer
-          default: 1280
-        height:
-          type: integer
-          default: 800
-        fullPage:
-          type: boolean
-          default: false
-        darkMode:
-          type: boolean
-          default: false
-        blockAds:
-          type: boolean
-          default: false
-        blockCookieBanners:
-          type: boolean
-          default: false
-        webhookUrl:
-          type: string
-          format: uri
-    ScreenshotJsonResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        cached:
-          type: boolean
-        data:
-          type: string
-          description: Base64-encoded image data
-        format:
-          type: string
-          example: png
-        width:
-          type: integer
-          example: 1280
-        height:
-          type: integer
-          example: 800
-        fileSize:
-          type: integer
-        took:
-          type: integer
-          description: Response time in ms
-        metadata:
-          type: object
-        storage:
-          type: object
-          properties:
-            id:
-              type: string
-            url:
-              type: string
     ScreenshotRequest:
       type: object
       properties:
@@ -728,11 +622,113 @@ components:
           type: object
           additionalProperties:
             type: string
+    AsyncJobResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        async:
+          type: boolean
+        jobId:
+          type: string
+        status:
+          type: string
+          enum:
+          - pending
+          - processing
+          - completed
+          - failed
+        statusUrl:
+          type: string
+    BatchRequest:
+      type: object
+      required:
+      - urls
+      properties:
+        urls:
+          type: array
+          items:
+            type: string
+            format: uri
+          minItems: 1
+          maxItems: 100
+        format:
+          type: string
+          enum:
+          - png
+          - jpeg
+          - webp
+          - avif
+          - pdf
+          default: png
+        quality:
+          type: integer
+          default: 80
+        width:
+          type: integer
+          default: 1280
+        height:
+          type: integer
+          default: 800
+        fullPage:
+          type: boolean
+          default: false
+        darkMode:
+          type: boolean
+          default: false
+        blockAds:
+          type: boolean
+          default: false
+        blockCookieBanners:
+          type: boolean
+          default: false
+        webhookUrl:
+          type: string
+          format: uri
+    ScreenshotJsonResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        cached:
+          type: boolean
+        data:
+          type: string
+          description: Base64-encoded image data
+        format:
+          type: string
+          example: png
+        width:
+          type: integer
+          example: 1280
+        height:
+          type: integer
+          example: 800
+        fileSize:
+          type: integer
+        took:
+          type: integer
+          description: Response time in ms
+        metadata:
+          type: object
+        storage:
+          type: object
+          properties:
+            id:
+              type: string
+            url:
+              type: string
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
   headers:
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Max requests per window
     X-Request-Id:
       schema:
         type: string
@@ -745,6 +741,10 @@ components:
       schema:
         type: integer
       description: Remaining requests
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Max requests per window
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

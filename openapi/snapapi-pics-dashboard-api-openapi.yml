@@ -404,6 +404,32 @@ paths:
           description: Current password incorrect or OAuth account
 components:
   schemas:
+    UserObject:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+        plan:
+          type: string
+          enum:
+          - free
+          - starter
+          - pro
+        avatarUrl:
+          type: string
+          nullable: true
+        emailVerified:
+          type: boolean
+        isAdmin:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
     ApiKey:
       type: object
       properties:
@@ -437,32 +463,6 @@ components:
             - pdf
             - metadata
             - batch
-    UserObject:
-      type: object
-      properties:
-        id:
-          type: string
-        email:
-          type: string
-          format: email
-        name:
-          type: string
-        plan:
-          type: string
-          enum:
-          - free
-          - starter
-          - pro
-        avatarUrl:
-          type: string
-          nullable: true
-        emailVerified:
-          type: boolean
-        isAdmin:
-          type: boolean
-        createdAt:
-          type: string
-          format: date-time
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
