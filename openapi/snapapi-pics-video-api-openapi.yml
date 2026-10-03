@@ -89,11 +89,6 @@ paths:
         '503':
           description: Server busy (max concurrent videos reached)
 components:
-  headers:
-    X-Request-Id:
-      schema:
-        type: string
-      description: Unique request identifier for debugging
   schemas:
     VideoRequest:
       type: object
@@ -156,6 +151,11 @@ components:
           - base64
           - json
           default: binary
+  headers:
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

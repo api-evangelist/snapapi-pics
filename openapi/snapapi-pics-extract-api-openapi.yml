@@ -127,6 +127,19 @@ paths:
           description: Validation error
 components:
   schemas:
+    ExtractResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        type:
+          type: string
+        url:
+          type: string
+        data:
+          description: Extracted content (format depends on type param)
+        responseTime:
+          type: integer
     ExtractRequest:
       type: object
       required:
@@ -177,19 +190,6 @@ components:
         cleanOutput:
           type: boolean
           default: true
-    ExtractResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        type:
-          type: string
-        url:
-          type: string
-        data:
-          description: Extracted content (format depends on type param)
-        responseTime:
-          type: integer
   headers:
     X-Request-Id:
       schema:

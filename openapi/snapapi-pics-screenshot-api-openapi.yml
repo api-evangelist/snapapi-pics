@@ -286,6 +286,23 @@ paths:
         '404':
           description: Job not found or expired
 components:
+  headers:
+    X-RateLimit-Reset:
+      schema:
+        type: integer
+      description: Window reset time (unix ms)
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Max requests per window
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: Remaining requests
   schemas:
     ScreenshotRequest:
       type: object
@@ -622,23 +639,48 @@ components:
           type: object
           additionalProperties:
             type: string
-    AsyncJobResponse:
+    ScreenshotJsonResponse:
       type: object
       properties:
         success:
           type: boolean
-        async:
+          example: true
+        cached:
           type: boolean
-        jobId:
+        data:
           type: string
-        status:
+          description: Base64-encoded image data
+        format:
           type: string
-          enum:
-          - pending
-          - processing
-          - completed
-          - failed
-        statusUrl:
+          example: png
+        width:
+          type: integer
+          example: 1280
+        height:
+          type: integer
+          example: 800
+        fileSize:
+          type: integer
+        took:
+          type: integer
+          description: Response time in ms
+        metadata:
+          type: object
+        storage:
+          type: object
+          properties:
+            id:
+              type: string
+            url:
+              type: string
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        message:
           type: string
     BatchRequest:
       type: object
@@ -685,66 +727,24 @@ components:
         webhookUrl:
           type: string
           format: uri
-    ScreenshotJsonResponse:
+    AsyncJobResponse:
       type: object
       properties:
         success:
           type: boolean
-          example: true
-        cached:
+        async:
           type: boolean
-        data:
+        jobId:
           type: string
-          description: Base64-encoded image data
-        format:
+        status:
           type: string
-          example: png
-        width:
-          type: integer
-          example: 1280
-        height:
-          type: integer
-          example: 800
-        fileSize:
-          type: integer
-        took:
-          type: integer
-          description: Response time in ms
-        metadata:
-          type: object
-        storage:
-          type: object
-          properties:
-            id:
-              type: string
-            url:
-              type: string
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
+          enum:
+          - pending
+          - processing
+          - completed
+          - failed
+        statusUrl:
           type: string
-        message:
-          type: string
-  headers:
-    X-Request-Id:
-      schema:
-        type: string
-      description: Unique request identifier for debugging
-    X-RateLimit-Reset:
-      schema:
-        type: integer
-      description: Window reset time (unix ms)
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: Remaining requests
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Max requests per window
   securitySchemes:
     ApiKeyAuth:
       type: apiKey
