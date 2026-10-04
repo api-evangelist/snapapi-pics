@@ -368,15 +368,6 @@ components:
         createdAt:
           type: string
           format: date-time
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        message:
-          type: string
     AuthResponse:
       type: object
       properties:
@@ -388,6 +379,15 @@ components:
         accessToken:
           type: string
           description: JWT access token (15 min expiry). Store in memory only.
+        message:
+          type: string
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
         message:
           type: string
   securitySchemes:

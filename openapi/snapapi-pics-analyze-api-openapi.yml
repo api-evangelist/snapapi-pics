@@ -77,6 +77,30 @@ paths:
           description: LLM provider error
 components:
   schemas:
+    AnalyzeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        url:
+          type: string
+        metadata:
+          type: object
+          properties:
+            url:
+              type: string
+            title:
+              type: string
+            description:
+              type: string
+        analysis:
+          description: LLM analysis (string or structured object)
+        provider:
+          type: string
+        model:
+          type: string
+        responseTime:
+          type: integer
     AnalyzeRequest:
       type: object
       required:
@@ -127,30 +151,6 @@ components:
         maxContentLength:
           type: integer
           default: 50000
-    AnalyzeResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        url:
-          type: string
-        metadata:
-          type: object
-          properties:
-            url:
-              type: string
-            title:
-              type: string
-            description:
-              type: string
-        analysis:
-          description: LLM analysis (string or structured object)
-        provider:
-          type: string
-        model:
-          type: string
-        responseTime:
-          type: integer
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

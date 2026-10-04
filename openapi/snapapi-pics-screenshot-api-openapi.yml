@@ -286,23 +286,6 @@ paths:
         '404':
           description: Job not found or expired
 components:
-  headers:
-    X-RateLimit-Reset:
-      schema:
-        type: integer
-      description: Window reset time (unix ms)
-    X-RateLimit-Limit:
-      schema:
-        type: integer
-      description: Max requests per window
-    X-Request-Id:
-      schema:
-        type: string
-      description: Unique request identifier for debugging
-    X-RateLimit-Remaining:
-      schema:
-        type: integer
-      description: Remaining requests
   schemas:
     ScreenshotRequest:
       type: object
@@ -639,40 +622,6 @@ components:
           type: object
           additionalProperties:
             type: string
-    ScreenshotJsonResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-          example: true
-        cached:
-          type: boolean
-        data:
-          type: string
-          description: Base64-encoded image data
-        format:
-          type: string
-          example: png
-        width:
-          type: integer
-          example: 1280
-        height:
-          type: integer
-          example: 800
-        fileSize:
-          type: integer
-        took:
-          type: integer
-          description: Response time in ms
-        metadata:
-          type: object
-        storage:
-          type: object
-          properties:
-            id:
-              type: string
-            url:
-              type: string
     Error:
       type: object
       properties:
@@ -727,6 +676,40 @@ components:
         webhookUrl:
           type: string
           format: uri
+    ScreenshotJsonResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: true
+        cached:
+          type: boolean
+        data:
+          type: string
+          description: Base64-encoded image data
+        format:
+          type: string
+          example: png
+        width:
+          type: integer
+          example: 1280
+        height:
+          type: integer
+          example: 800
+        fileSize:
+          type: integer
+        took:
+          type: integer
+          description: Response time in ms
+        metadata:
+          type: object
+        storage:
+          type: object
+          properties:
+            id:
+              type: string
+            url:
+              type: string
     AsyncJobResponse:
       type: object
       properties:
@@ -745,6 +728,23 @@ components:
           - failed
         statusUrl:
           type: string
+  headers:
+    X-RateLimit-Limit:
+      schema:
+        type: integer
+      description: Max requests per window
+    X-RateLimit-Reset:
+      schema:
+        type: integer
+      description: Window reset time (unix ms)
+    X-RateLimit-Remaining:
+      schema:
+        type: integer
+      description: Remaining requests
+    X-Request-Id:
+      schema:
+        type: string
+      description: Unique request identifier for debugging
   securitySchemes:
     ApiKeyAuth:
       type: apiKey

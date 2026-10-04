@@ -147,15 +147,6 @@ paths:
           description: Invalid API key
 components:
   schemas:
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
-        message:
-          type: string
     ScrapeResponse:
       type: object
       properties:
@@ -173,6 +164,15 @@ components:
               data:
                 type: string
                 description: Scraped content (string or JSON string for links/metadata)
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
     ScrapeRequest:
       type: object
       required:
