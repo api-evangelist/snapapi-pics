@@ -147,23 +147,6 @@ paths:
           description: Invalid API key
 components:
   schemas:
-    ScrapeResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        results:
-          type: array
-          items:
-            type: object
-            properties:
-              page:
-                type: integer
-              url:
-                type: string
-              data:
-                type: string
-                description: Scraped content (string or JSON string for links/metadata)
     Error:
       type: object
       properties:
@@ -218,6 +201,23 @@ components:
           type: string
           maxLength: 20
           description: Browser locale (e.g. en-US)
+    ScrapeResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        results:
+          type: array
+          items:
+            type: object
+            properties:
+              page:
+                type: integer
+              url:
+                type: string
+              data:
+                type: string
+                description: Scraped content (string or JSON string for links/metadata)
   headers:
     X-Request-Id:
       schema:

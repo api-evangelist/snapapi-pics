@@ -342,6 +342,15 @@ paths:
           description: Missing token
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
     UserObject:
       type: object
       properties:
@@ -379,15 +388,6 @@ components:
         accessToken:
           type: string
           description: JWT access token (15 min expiry). Store in memory only.
-        message:
-          type: string
-    Error:
-      type: object
-      properties:
-        statusCode:
-          type: integer
-        error:
-          type: string
         message:
           type: string
   securitySchemes:
