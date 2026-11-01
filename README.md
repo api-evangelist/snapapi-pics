@@ -64,42 +64,113 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-REST API for turning any URL into visual captures or structured data with a single
-call — screenshots (PNG, JPEG, WebP, AVIF), full-page PDFs, scroll videos (MP4,
-WebM, GIF), markdown/text/metadata extraction tuned for AI pipelines, and multi-page
-scraping with anti-bot stealth and proxy support. Also offers bring-your-own-key AI
-page analysis (OpenAI/Anthropic), batch and async processing with webhooks, device
-emulation, and optional cloud storage — all powered by headless Chromium.
+SnapAPI is a REST API for turning any URL into visual captures or structured data with a single call - screenshots (PNG, JPEG, WebP, AVIF), full-page PDFs, scroll videos (MP4, WebM, GIF), markdown/text/metadata extraction tuned for AI pipelines, and multi-page scraping with anti-bot stealth and proxy support. It also offers BYOK AI page analysis (OpenAI/Anthropic), batch and async processing with webhooks, device emulation, ad/cookie-banner blocking, caching, and optional cloud storage, all powered by headless Chromium. Free tier of 200 requests/month, no credit card required, with X-Api-Key authentication and eight official SDKs.
 
-- **Website:** https://snapapi.pics
-- **Documentation:** https://snapapi.pics/docs.html
-- **API reference:** https://api.snapapi.pics/v1/docs
-- **OpenAPI:** [openapi/snapapi-pics-openapi.json](openapi/snapapi-pics-openapi.json) (3.1.0, v2.0.0)
-- **Base URL:** https://api.snapapi.pics
-- **Auth:** `X-Api-Key` header (or `Authorization: Bearer`)
-- **Free tier:** 200 requests/month, no credit card
-- **SDKs:** 8 official SDKs
-- **Author:** Aleksei Serebriakov (support@snapapi.pics)
+**Areas:** Screenshots · PDF · Video · Web Scraping · Content Extraction · Markdown · Metadata · Headless Chromium · Anti-Bot · Proxies · Artificial Intelligence · Web Capture
 
-## APIs
+## SnapAPI on APIs.io
 
-| API | Endpoint(s) |
-| --- | --- |
-| Screenshot | `POST`/`GET /v1/screenshot`, `/v1/screenshot/batch`, `/v1/screenshot/async/{jobId}` |
-| PDF | `POST /v1/pdf` |
-| Video | `POST /v1/video` |
-| Content Extraction | `POST`/`GET /v1/extract` |
-| Scrape | `POST`/`GET /v1/scrape` |
-| AI Analyze (BYOK) | `POST /v1/analyze` |
-| Usage & Capabilities | `GET /v1/usage`, `/v1/devices`, `/v1/capabilities` |
+Everything profiled for SnapAPI is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/snapapi-pics/](https://apis.io/providers/snapapi-pics/)** — or go straight to one of the APIs or properties below.
 
-## Note on naming
+### APIs (13)
 
-This is **SnapAPI at `snapapi.pics`** (by Aleksei Serebriakov). It is distinct from
-the separately-cataloged [`snapapi`](../snapapi/) provider at `snap.michaelcli.com`,
-which shares the product name but is a different domain and a smaller v1 surface.
+- [SnapAPI Analyze API](https://apis.io/apis/snapapi-pics/snapapi-pics-analyze-api/) — AI-powered web analysis with your own LLM key (BYOK)
+- [SnapAPI Auth API](https://apis.io/apis/snapapi-pics/snapapi-pics-auth-api/) — Authentication — register, login, OAuth, password reset, email verification
+- [SnapAPI Dashboard API](https://apis.io/apis/snapapi-pics/snapapi-pics-dashboard-api/) — User dashboard — quota overview, API key management, billing, usage history
+- [SnapAPI Extract API](https://apis.io/apis/snapapi-pics/snapapi-pics-extract-api/) — Web content extraction (HTML, text, markdown, article, structured)
+- [SnapAPI Health API](https://apis.io/apis/snapapi-pics/snapapi-pics-health-api/) — Health check and monitoring
+- [SnapAPI PDF API](https://apis.io/apis/snapapi-pics/snapapi-pics-pdf-api/) — PDF generation from URLs and HTML
+- [SnapAPI Scrape API](https://apis.io/apis/snapapi-pics/snapapi-pics-scrape-api/) — Web scraping — extract text, HTML, links, markdown, or metadata from any URL
+- [SnapAPI Screenshot API](https://apis.io/apis/snapapi-pics/snapapi-pics-screenshot-api/) — Screenshot, PDF, and batch capture
+- [SnapAPI Storage API](https://apis.io/apis/snapapi-pics/snapapi-pics-storage-api/) — File storage — list, retrieve, delete stored files; configure custom S3
+- [SnapAPI Usage API](https://apis.io/apis/snapapi-pics/snapapi-pics-usage-api/) — API usage and quota management
+- [SnapAPI Utilities API](https://apis.io/apis/snapapi-pics/snapapi-pics-utilities-api/) — Device presets and API capabilities
+- [SnapAPI Video API](https://apis.io/apis/snapapi-pics/snapapi-pics-video-api/) — Video recording of webpages
+- [SnapAPI Webhooks API](https://apis.io/apis/snapapi-pics/snapapi-pics-webhooks-api/) — Paddle billing webhooks (server-to-server)
 
----
+### Published properties
 
-Cataloged on [APIs.io](https://apis.io/) by [API Evangelist](https://apievangelist.com/).
-Source: inbound submission from the author (2026-07-16).
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### Collections (13)
+
+Postman and Open Collection request collections.
+
+- [SnapAPI - Screenshot & Web Data Analyze API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-analyze-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Auth API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-auth-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Dashboard API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-dashboard-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Extract API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-extract-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Health API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-health-api/)
+- [SnapAPI - Screenshot & Web Data Analyze PDF API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-pdf-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Scrape API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-scrape-api/)
+- [SnapAPI - & Web Data Analyze Screenshot API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-screenshot-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Storage API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-storage-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Usage API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-usage-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Utilities API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-utilities-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Video API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-video-api/)
+- [SnapAPI - Screenshot & Web Data Analyze Webhooks API](https://apis.io/collections/snapapi-pics/open-snapapi-pics-webhooks-api/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://snapapi.pics)
+- [Documentation](https://snapapi.pics/docs.html)
+- [API reference](https://api.snapapi.pics/v1/docs)
+- [Pricing](https://snapapi.pics/pricing.html)
+- [Changelog](https://snapapi.pics/changelog.html)
+- [Blog](https://snapapi.pics/blog.html)
+- [Status](https://snapapi.pics/status.html)
+
+## API Evangelist rating
+
+**Kin Score 29.2** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 66.1 |
+| Contract quality | 51.7 |
+| Contract governance | 0.0 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 19.0 |
+| Access clarity | 23.7 |
+
+**Agent readiness 30.5** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | documented (partial credit) |
+| MCP Server | — |
+| Auth Clarity | bearer (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | verified |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 0.0** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/snapapi-pics/](https://apis.io/providers/snapapi-pics/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for SnapAPI: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/snapapi-pics/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
